@@ -7,9 +7,7 @@ class Init {
 	);
 
 	protected function getConfig($key) {
-	    global $config;
-
-	    return $config[$key];
+	    return $this->config[$key];
 	}
 
 	public function getPdo(){
