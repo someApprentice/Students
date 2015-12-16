@@ -1,0 +1,7 @@
+{
+    "autoload": {
+        "PSR-4": {
+            "Foo\\": "app/Foo"
+        }
+    }
+}
