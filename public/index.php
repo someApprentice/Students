@@ -1,4 +1,4 @@
 <?php
-require_once "/../app/autoload.php";
+require_once __DIR__ . '/../vendor/autoload.php';
 
-$bar = new SomeClass();
+$bar = new App\Foo\SomeClass();
