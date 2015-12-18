@@ -1,6 +1,10 @@
 <?php
+namespace App;
+
+use App\Init as Init;
+
 class Init {
-	protected $config = array(
+	public $config = array(
 	    'db_dsn' => "mysql:host=localhost; dbname=studentsdb",
 	    'db_user' => "root",
 	    'db_password' => ""
@@ -14,13 +18,13 @@ class Init {
 	    static $pdo = null;
 
 	    if (!$pdo) {
-	        $pdo = new PDO(
-	            getConfig('db_dsn'),
-	            getConfig('db_user'),
-	            getConfig('db_password')
+	        $pdo = new \PDO(
+	            Init::getConfig('db_dsn'),
+	            Init::getConfig('db_user'),
+	            Init::getConfig('db_password')
 	        );
 
-	        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 	        $query = $pdo->prepare("SET sql_mode = 'STRICT_ALL_TABLES'");
 	        
 	        $query->execute();
