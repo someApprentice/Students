@@ -4,7 +4,7 @@ namespace App;
 use App\Init as Init;
 
 class Init {
-	public $config = array(
+	protected $config = array(
 	    'db_dsn' => "mysql:host=localhost; dbname=studentsdb",
 	    'db_user' => "root",
 	    'db_password' => ""
