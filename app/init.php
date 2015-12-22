@@ -1,35 +1,28 @@
 <?php
-namespace App;
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/config.php';
 
-use App\Init as Init;
+function getConfig($key) {
+    global $config;
 
-class Init {
-	protected $config = array(
-	    'db_dsn' => "mysql:host=localhost; dbname=studentsdb",
-	    'db_user' => "root",
-	    'db_password' => ""
-	);
+    return $config[$key];
+}
+	
+function getPdo(){
+    $pdo = null;
 
-	protected function getConfig($key) {
-	    return $this->config[$key];
-	}
+    if (!$pdo) {
+        $pdo = new \PDO(
+            getConfig('db_dsn'),
+            getConfig('db_user'),
+            getConfig('db_password')
+        );
 
-	public function getPdo(){
-	    static $pdo = null;
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $query = $pdo->prepare("SET sql_mode = 'STRICT_ALL_TABLES'");
+        
+        $query->execute();
+    }
 
-	    if (!$pdo) {
-	        $pdo = new \PDO(
-	            Init::getConfig('db_dsn'),
-	            Init::getConfig('db_user'),
-	            Init::getConfig('db_password')
-	        );
-
-	        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-	        $query = $pdo->prepare("SET sql_mode = 'STRICT_ALL_TABLES'");
-	        
-	        $query->execute();
-	    }
-
-	    return $pdo;
-	}
+    return $pdo;
 }
