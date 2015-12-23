@@ -1,5 +1,5 @@
 <?php
-namespace App\Model\Halper;
+namespace App\Model\Helper;
 
 class RegistrationHelper {
 	static function generateSalt() {	

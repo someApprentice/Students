@@ -9,6 +9,8 @@ class StudentGateway extends TableDataGateWay {
 
 	protected $errors = array();
 
+	protected $pdo;
+
 	public function __construct($student, $hash, $salt, $token) {
 		$this->student = $student;
 		$this->hash = $hash;
@@ -32,9 +34,15 @@ class StudentGateway extends TableDataGateWay {
 		return $this->token;
 	}
 
+	public function getPdo() {
+		require __DIR__ . '/../../config.php';
+		require __DIR__ . '/../../init.php';
+
+		return $pdo;
+	}
 
 	public function addStudent() {
-		$connect = getPdo();
+		$connect = $this->getPdo();
 
 	    $insert = $connect->prepare("INSERT INTO students (id, student, password, salt, token) VALUES (NULL, :student, :hash, :salt, :token)");
 	    $insert->execute(array(
@@ -50,7 +58,7 @@ class StudentGateway extends TableDataGateWay {
 	public function removeStudent($id) {
 		$connect = getPdo();
 
-	    $insert = $connect->prepare("DELETE FROM users WHERE id=:id");
+	    $insert = $connect->prepare("DELETE FROM students WHERE id=:id");
 	    $insert->execute(array(
 		    ':id' => $id
 	    ));

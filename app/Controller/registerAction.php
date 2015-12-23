@@ -1,7 +1,8 @@
 <?php
 namespace App\Controller;
 
-use App\Model\Halper\RegistrationHelper as RegistrationHelper;
+use App\Model\Helper\RegistrationHelper as RegistrationHelper;
+use \App\Model\Gateway\StudentGateway as StudentGateway;
 
 class RegisterAction {
 	static function SignUp($login, $password) {
@@ -9,7 +10,7 @@ class RegisterAction {
 		$hash = RegistrationHelper::hashPassword($password, $salt);
 		$token = RegistrationHelper::generateToken();
 
-		$student = new App\Model\Gateway\StudentGateway($login, $hash, $salt, $token);
+		$student = new StudentGateway($login, $hash, $salt, $token);
 		$student->addStudent();
 	}
 }
