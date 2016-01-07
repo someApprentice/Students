@@ -1,44 +1,17 @@
 <?php
 namespace App\Model\Gateway;
 
+use App\Model\Essence\Student as Student;
+
 class StudentGateway extends TableDataGateWay {
-	protected $student;
-	protected $hash;
-	protected $salt;
-	protected $token;
-
-	protected $errors = array();
-
 	protected $pdo;
 
-	public function __construct($student, $hash, $salt, $token) {
-		$this->student = $student;
-		$this->hash = $hash;
-		$this->salt = $salt;
-		$this->token = $token;
+	public function __construct($pdo) {
+		$this->pdo = $pdo;
 	}
 
-	public function getStudent() {
-		return $this->student;
-	}
-
-	public function getHash() {
-		return $this->hash;
-	}
-
-	public function getSalt() {
-		return $this->salt;
-	}
-
-	public function getToken() {
-		return $this->token;
-	}
-
-	public function getPdo() {
-		require __DIR__ . '/../../config.php';
-		require __DIR__ . '/../../init.php';
-
-		return $pdo;
+	protected function getPdo() {
+		return $this->pdo;
 	}
 
 	public function addStudent() {
@@ -46,17 +19,17 @@ class StudentGateway extends TableDataGateWay {
 
 	    $insert = $connect->prepare("INSERT INTO students (id, student, password, salt, token) VALUES (NULL, :student, :hash, :salt, :token)");
 	    $insert->execute(array(
-		    ':student' => $this->getStudent(),
-		    ':hash' => $this->getHash(),
-		    ':salt' => $this->getSalt(),
-		    ':token' => $this->getToken()
+		    ':student' => Student::getStudent(),
+		    ':hash' => Student::getHash(),
+		    ':salt' => Student::getSalt(),
+		    ':token' => Student::getToken()
 	    ));
 
 	    return $insert;
 	}
 
 	public function removeStudent($id) {
-		$connect = getPdo();
+		$connect = $this->getPdo();
 
 	    $insert = $connect->prepare("DELETE FROM students WHERE id=:id");
 	    $insert->execute(array(

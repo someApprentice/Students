@@ -16,3 +16,4 @@ $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 $query = $pdo->prepare("SET sql_mode = 'STRICT_ALL_TABLES'");
 
 $query->execute();
+
