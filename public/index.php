@@ -3,4 +3,4 @@ require_once __DIR__ . '/../app/init.php';
 
 use App\Controller\RegisterAction as RegisterAction;
 
-RegisterAction::SignUp('someUser', 'somePassword');
+RegisterAction::SignUp('somelogin', 'somepassword', $pdo);

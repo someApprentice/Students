@@ -6,17 +6,14 @@ use App\Model\Gateway\StudentGateway as StudentGateway;
 use App\Model\Essence\Student as Student;
 
 class RegisterAction {
-	static function SignUp($login, $password) {
+	static function SignUp($login, $password, \PDO $pdo) {
 		$salt = RegistrationHelper::generateSalt();
 		$hash = RegistrationHelper::hashPassword($password, $salt);
 		$token = RegistrationHelper::generateToken();
 
-		Student::setStudent($login);
-		Student::setHash($hash);
-		Student::setSalt($salt);
-		Student::setToken($token);
+		$student = new Student($login, $hash, $salt, $token);
 
-		$student = new StudentGateway();
-		$student->addStudent();
+		$studentgtw = new StudentGateway($pdo, $student);
+		$studentgtw->addStudent();
 	}
 }

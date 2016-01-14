@@ -5,9 +5,11 @@ use App\Model\Essence\Student as Student;
 
 class StudentGateway extends TableDataGateWay {
 	protected $pdo;
+	protected $student;
 
-	public function __construct($pdo) {
+	public function __construct(\PDO $pdo, Student $student) {
 		$this->pdo = $pdo;
+		$this->student = $student;
 	}
 
 	protected function getPdo() {
@@ -19,10 +21,10 @@ class StudentGateway extends TableDataGateWay {
 
 	    $insert = $connect->prepare("INSERT INTO students (id, student, password, salt, token) VALUES (NULL, :student, :hash, :salt, :token)");
 	    $insert->execute(array(
-		    ':student' => Student::getStudent(),
-		    ':hash' => Student::getHash(),
-		    ':salt' => Student::getSalt(),
-		    ':token' => Student::getToken()
+		    ':student' => $this->student->getStudent(),
+		    ':hash' => $this->student->getHash(),
+		    ':salt' => $this->student->getSalt(),
+		    ':token' => $this->student->getToken()
 	    ));
 
 	    return $insert;

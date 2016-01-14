@@ -2,8 +2,6 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/config.php';
 
-print_r($config['db_dsn']);
-    
 $pdo = null;
 
 $pdo = new \PDO(

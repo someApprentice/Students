@@ -1,5 +1,5 @@
 <?php
-namespace App\Model\Essance;
+namespace App\Model\Essence;
 
 class Student {
 	protected $student;
@@ -7,8 +7,11 @@ class Student {
 	protected $salt;
 	protected $token;
 
-	public function __construct() {
-
+	public function __construct($student, $hash, $salt, $token) {
+		$this->student = $student;
+		$this->hash = $hash;
+		$this->salt = $salt;
+		$this->token = $token;
 	}
 
 	public function setStudent($student) {
