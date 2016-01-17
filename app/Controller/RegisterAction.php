@@ -13,7 +13,8 @@ class RegisterAction {
 
 		$student = new Student($login, $hash, $salt, $token);
 
-		$studentgtw = new StudentGateway($pdo, $student);
-		$studentgtw->addStudent();
+		$studentgtw = new StudentGateway($pdo);
+		
+		$studentgtw->addStudent($student);
 	}
 }
