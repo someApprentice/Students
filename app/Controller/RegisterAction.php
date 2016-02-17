@@ -1,20 +1,26 @@
 <?php
 namespace App\Controller;
 
-use App\Model\Helper\RegistrationHelper as RegistrationHelper;
-use App\Model\Gateway\StudentGateway as StudentGateway;
-use App\Model\Essence\Student as Student;
+use App\Model\Helper\RegistrationHelper;
+use App\Model\Gateway\StudentGateway;
+use App\Model\Essence\Student;
 
 class RegisterAction {
-	static function SignUp($login, $password, \PDO $pdo) {
-		$salt = RegistrationHelper::generateSalt();
-		$hash = RegistrationHelper::hashPassword($password, $salt);
-		$token = RegistrationHelper::generateToken();
+	protected $reghelper;
+	protected $studentgtw;
 
-		$student = new Student($login, $hash, $salt, $token);
+	public function __construct(RegistrationHelper $reghelper, StudentGateway $studentgtw) {
+		$this->reghelper = $reghelper;
+		$this->studentgtw = $studentgtw; 
+	}
 
-		$studentgtw = new StudentGateway($pdo);
+	public function SignUp($login, $password) {
+		$salt = $this->reghelper->generateSalt(); //getRegHelper() будет лучше?
+		$hash = $this->reghelper->hashPassword($password, $salt);
+		$token = $this->reghelper->generateToken();
+
+		$student = new Student($login, $hash, $salt, $token); //setStudent()? 
 		
-		$studentgtw->addStudent($student);
+		$this->studentgtw->addStudent($student);
 	}
 }
