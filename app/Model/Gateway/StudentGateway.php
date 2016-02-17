@@ -1,11 +1,35 @@
 <?php
 namespace App\Model\Gateway;
 
-use App\Model\Essence\Student as Student;
+use App\Model\Essence\Student;
 
 class StudentGateway extends TableDataGateWay {
 	protected $pdo;
+
+	public function getStudentById($id) {
+		$connect = $this->getPdo();
+
+	    $user = $connect->prepare("SELECT * FROM students WHERE id=:id");
+	    $user->bindValue(':id', $id, \PDO::PARAM_STR);
+	    $user->execute();
+
+	    $result = $user->fetch(\PDO::FETCH_ASSOC);
+
+    	return $result;		
+	}
 	
+	public function getStudentByLogin($login) {
+		$connect = $this->getPdo();
+
+	    $user = $connect->prepare("SELECT * FROM students WHERE student=:login");
+	    $user->bindValue(':login', $login, \PDO::PARAM_STR);
+	    $user->execute();
+
+	    $result = $user->fetch(\PDO::FETCH_ASSOC);
+
+    	return $result;		
+	}
+
 	public function addStudent(Student $student) {
 		$connect = $this->getPdo();
 
