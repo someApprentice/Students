@@ -9,7 +9,7 @@ use App\Controller\RegisterAction;
 
 $container = new Pimple();
 
-$container['PDO'] = $container->factory(function () use ($config) {
+$container['PDO'] = function () use ($config) {
 	$pdo = new \PDO(
 	    $config['db_dsn'],
 	    $config['db_user'],
@@ -19,22 +19,22 @@ $container['PDO'] = $container->factory(function () use ($config) {
 
 	$pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
+	$query = $pdo->prepare("SET sql_mode = 'STRICT_ALL_TABLES'");
+	$query->execute();
+
 	return $pdo;
 
-});
-
-$query = $container['PDO']->prepare("SET sql_mode = 'STRICT_ALL_TABLES'");
-$query->execute();
+};
 
 
-$container['RegistrationHelper'] = $container->factory(function () {
+$container['RegistrationHelper'] = function () {
 	return new RegistrationHelper();
-});
+};
 
-$container['StudentGateway'] = $container->factory(function ($c) {
+$container['StudentGateway'] = function ($c) {
 	return new StudentGateway($c['PDO']);
-});
+};
 
-$container['RegisterAction'] = $container->factory(function ($c) {
+$container['RegisterAction'] = function ($c) {
 	return new RegisterAction($c['RegistrationHelper'], $c['StudentGateway']);
-});
+};
