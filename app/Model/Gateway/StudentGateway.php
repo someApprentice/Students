@@ -18,11 +18,35 @@ class StudentGateway extends TableDataGateWay {
     	return $result;		
 	}
 	
-	public function getStudentByLogin($login) {
+	public function getStudentByName($name) {
 		$connect = $this->getPdo();
 
-	    $user = $connect->prepare("SELECT * FROM students WHERE student=:login");
-	    $user->bindValue(':login', $login, \PDO::PARAM_STR);
+	    $user = $connect->prepare("SELECT * FROM students WHERE name=:name");
+	    $user->bindValue(':name', $name, \PDO::PARAM_STR);
+	    $user->execute();
+
+	    $result = $user->fetch(\PDO::FETCH_ASSOC);
+
+    	return $result;		
+	}
+
+	public function getStudentBySurname($surname) {
+		$connect = $this->getPdo();
+
+	    $user = $connect->prepare("SELECT * FROM students WHERE surname=:surname");
+	    $user->bindValue(':surname', $surname, \PDO::PARAM_STR);
+	    $user->execute();
+
+	    $result = $user->fetch(\PDO::FETCH_ASSOC);
+
+    	return $result;		
+	}
+
+	public function getStudentByEmail($email) {
+		$connect = $this->getPdo();
+
+	    $user = $connect->prepare("SELECT * FROM students WHERE email=:email");
+	    $user->bindValue(':email', $email, \PDO::PARAM_STR);
 	    $user->execute();
 
 	    $result = $user->fetch(\PDO::FETCH_ASSOC);
@@ -33,9 +57,44 @@ class StudentGateway extends TableDataGateWay {
 	public function addStudent(Student $student) {
 		$connect = $this->getPdo();
 
-	    $insert = $connect->prepare("INSERT INTO students (id, student, password, salt, token) VALUES (NULL, :student, :hash, :salt, :token)");
+	    $insert = $connect->prepare("INSERT INTO students (
+	    		id,
+	    		name,
+	    		surname,
+	    		gender,
+	    		grupnumber,
+	    		email,
+	    		satscores,
+	    		yearofbirth,
+	    		location,
+	    		password,
+	    		salt,
+	    		token
+ 	    	) VALUES (
+	    		NULL,
+	    		:name,
+	    		:surname,
+	    		:gender,
+	    		:grupnumber,
+	    		:email,
+	    		:satscores,
+	    		:yearofbirth,
+	    		:location,
+	    		:hash,
+	    		:salt,
+	    		:token
+	    	)"
+	    );
+
 	    $insert->execute(array(
-		    ':student' => $student->getStudent(),
+		    ':name' => $student->getName(),
+		    ':surname' => $student->getSurname(),
+		    ':gender' => $student->getGender(),
+		    ':grupnumber' => $student->getGrupNumber(),
+		    ':email' => $student->getEmail(),
+		    ':satscores' => $student->getSATScores(),
+		    ':yearofbirth' => $student->getYearOfBirth(),
+		    ':location' => $student->getLocation(),
 		    ':hash' => $student->getHash(),
 		    ':salt' => $student->getSalt(),
 		    ':token' => $student->getToken()

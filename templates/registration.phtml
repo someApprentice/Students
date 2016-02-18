@@ -8,9 +8,58 @@
 <body>
 		<form method="post" name="registraion" action="/public/registration.php">
 			<label>
-				Login <input type="text" name="login">
+				Name <input type="text" name="name">
 				<span>
-					<?= isset($container['RegisterAction']->getErrors()['login']) ? $container['RegisterAction']->getErrors()['login'] : '' ?>
+					<?= isset($container['RegisterAction']->getErrors()['name']) ? $container['RegisterAction']->getErrors()['name'] : '' ?>
+				</span>
+			</label>
+
+			<label>
+				Surname <input type="text" name="surname">
+				<span>
+					<?= isset($container['RegisterAction']->getErrors()['surname']) ? $container['RegisterAction']->getErrors()['surname'] : '' ?>
+				</span>
+			</label>
+
+			<label>
+				Gender <input type="radio" name="gender" value="Man">M <input type="radio" name="gender" value="Woman">W
+				<span>
+					<?= isset($container['RegisterAction']->getErrors()['gender']) ? $container['RegisterAction']->getErrors()['gender'] : '' ?>
+				</span>
+			</label>
+
+			<label>
+				Grup Number <input type="text" name="grupnumber">
+				<span>
+					<?= isset($container['RegisterAction']->getErrors()['grupnumber']) ? $container['RegisterAction']->getErrors()['grupnumber'] : '' ?>
+				</span>
+			</label>
+
+			<label>
+				Email <input type="text" name="email">
+				<span>
+					<?= isset($container['RegisterAction']->getErrors()['email']) ? $container['RegisterAction']->getErrors()['email'] : '' ?>
+				</span>
+			</label>
+
+			<label>
+				SAT Scores <input type="text" name="satscores">
+				<span>
+					<?= isset($container['RegisterAction']->getErrors()['satscores']) ? $container['RegisterAction']->getErrors()['satscores'] : '' ?>
+				</span>
+			</label>
+
+			<label>
+				Year Of Birth <input type="text" name="yearofbirth">
+				<span>
+					<?= isset($container['RegisterAction']->getErrors()['yearofbirth']) ? $container['RegisterAction']->getErrors()['yearofbirth'] : '' ?>
+				</span>
+			</label>
+
+			<label>
+				Location <input type="radio" name="location" value="local">Local <input type="radio" name="location" value="nonresident">Nonresident
+				<span>
+					<?= isset($container['RegisterAction']->getErrors()['location']) ? $container['RegisterAction']->getErrors()['location'] : '' ?>
 				</span>
 			</label>
 
