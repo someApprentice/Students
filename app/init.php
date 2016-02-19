@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/config.php';
 
 use Pimple\Container as Pimple;
 use App\Model\Helper\RegistrationHelper;
@@ -10,7 +9,9 @@ use App\Controller\RegisterAction;
 
 $container = new Pimple();
 
-$container['PDO'] = function () use ($config) {
+$container['PDO'] = function () {
+	$config = parse_ini_file('config.ini');
+
 	$pdo = new \PDO(
 	    $config['db_dsn'],
 	    $config['db_user'],
