@@ -1,22 +1,28 @@
 <?php
 namespace App\Model\Helper;
 
-class RegistrationHelper {
-	static function generateSalt() {	
-	    $salt = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.*-^%$#@!?%&%_=+<>[]{}0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.*-^%$#@!?%&%_=+<>[]{}'), 0, 44);
+class RegistrationHelper
+{
+    public function getPost()
+    {
+        $post = null;
 
-	    return $salt;
-	}
+        foreach ($_POST as $key => $value) {
+            $post[$key] = is_scalar($value) ? $value : '';
+            $post[$key] = trim($value);
+        }
 
-	static function hashPassword($password, $salt) {
-	    $hash = md5($password . $salt);
+        return $post;
+    }
 
-	    return $hash;
-	}
+    public function redirect()
+    {
+        if (isset($_GET['go'])) {
+            $location = $_GET['go'];
 
-	static function generateToken() {
-	    $token = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 32);
-
-	    return $token;
-	}
+            if (preg_match('!^/([^/]|\\Z)!', $location, $matches)) {
+                header("Location: " . $location);
+            }
+        }
+    }
 }

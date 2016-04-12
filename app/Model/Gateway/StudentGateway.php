@@ -1,63 +1,80 @@
 <?php
 namespace App\Model\Gateway;
 
-use App\Model\Essence\Student;
+use App\Model\Entity\Student;
 
-class StudentGateway extends TableDataGateWay {
-	protected $pdo;
+class StudentGateway extends TableDataGateWay
+{
+    protected $pdo;
 
-	public function getStudentById($id) {
-		$connect = $this->getPdo();
+    public function getAllStudents()
+    {
+        $pdo = $this->getPdo();
 
-	    $user = $connect->prepare("SELECT * FROM students WHERE id=:id");
-	    $user->bindValue(':id', $id, \PDO::PARAM_STR);
-	    $user->execute();
+        $query = $pdo->prepare("SELECT * FROM students");
+        $query->execute();
 
-	    $result = $user->fetch(\PDO::FETCH_ASSOC);
+        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
 
-    	return $result;		
-	}
-	
-	public function getStudentByName($name) {
-		$connect = $this->getPdo();
+        $students = new \SplObjectStorage();
 
-	    $user = $connect->prepare("SELECT * FROM students WHERE name=:name");
-	    $user->bindValue(':name', $name, \PDO::PARAM_STR);
-	    $user->execute();
+        foreach ($result as $value) {
+            $student = new Student();
+            $student->setId($value['id']);
+            $student->setName($value['name']);
+            $student->setSurname($value['surname']);
+            $student->setGender($value['gender']);
+            $student->setGrupNumber($value['grupnumber']);
+            $student->setEmail($value['email']);
+            $student->setSATScores($value['satscores']);
+            $student->serYearOfBirth($value['yearofbirth']);
+            $student->setLocation($value['location']);
+            $student->setHash($value['password']);
+            $student->setSalt($value['salt']);
+            $student->setToken($value['token']);
 
-	    $result = $user->fetch(\PDO::FETCH_ASSOC);
+            $students->attach($student);
+        }
 
-    	return $result;		
-	}
+        return $students;
+    }
 
-	public function getStudentBySurname($surname) {
-		$connect = $this->getPdo();
+    public function getStudentByСolumn($column, $value)
+    {
+        $pdo = $this->getPdo();
 
-	    $user = $connect->prepare("SELECT * FROM students WHERE surname=:surname");
-	    $user->bindValue(':surname', $surname, \PDO::PARAM_STR);
-	    $user->execute();
+        $query = $pdo->prepare("SELECT * FROM students WHERE {$column}=:value");
+        $query->bindValue(':value', $value);
+        $query->execute();
 
-	    $result = $user->fetch(\PDO::FETCH_ASSOC);
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
 
-    	return $result;		
-	}
+        if (empty($result)) {
+            return false;
+        }
 
-	public function getStudentByEmail($email) {
-		$connect = $this->getPdo();
+        $student = new Student();
+        $student->setId($result['id']);
+        $student->setName($result['name']);
+        $student->setSurname($result['surname']);
+        $student->setGender($result['gender']);
+        $student->setGrupNumber($result['grupnumber']);
+        $student->setEmail($result['email']);
+        $student->setSATScores($result['satscores']);
+        $student->serYearOfBirth($result['yearofbirth']);
+        $student->setLocation($result['location']);
+        $student->setHash($result['password']);
+        $student->setSalt($result['salt']);
+        $student->setToken($result['token']);
 
-	    $user = $connect->prepare("SELECT * FROM students WHERE email=:email");
-	    $user->bindValue(':email', $email, \PDO::PARAM_STR);
-	    $user->execute();
+        return $student;
+    }
 
-	    $result = $user->fetch(\PDO::FETCH_ASSOC);
+    public function addStudent(Student $student)
+    {
+        $pdo = $this->getPdo();
 
-    	return $result;		
-	}
-
-	public function addStudent(Student $student) {
-		$connect = $this->getPdo();
-
-	    $insert = $connect->prepare("INSERT INTO students (
+        $insert = $pdo->prepare("INSERT INTO students (
 	    		id,
 	    		name,
 	    		surname,
@@ -84,33 +101,32 @@ class StudentGateway extends TableDataGateWay {
 	    		:salt,
 	    		:token
 	    	)"
-	    );
+        );
 
-	    $insert->execute(array(
-		    ':name' => $student->getName(),
-		    ':surname' => $student->getSurname(),
-		    ':gender' => $student->getGender(),
-		    ':grupnumber' => $student->getGrupNumber(),
-		    ':email' => $student->getEmail(),
-		    ':satscores' => $student->getSATScores(),
-		    ':yearofbirth' => $student->getYearOfBirth(),
-		    ':location' => $student->getLocation(),
-		    ':hash' => $student->getHash(),
-		    ':salt' => $student->getSalt(),
-		    ':token' => $student->getToken()
-	    ));
+        $insert->execute(array(
+            ':name' => $student->getName(),
+            ':surname' => $student->getSurname(),
+            ':gender' => $student->getGender(),
+            ':grupnumber' => $student->getGrupNumber(),
+            ':email' => $student->getEmail(),
+            ':satscores' => $student->getSATScores(),
+            ':yearofbirth' => $student->getYearOfBirth(),
+            ':location' => $student->getLocation(),
+            ':hash' => $student->getHash(),
+            ':salt' => $student->getSalt(),
+            ':token' => $student->getToken(),
+        ));
+    }
 
-	    return $insert;
-	}
+    public function removeStudent($id)
+    {
+        $pdo = $this->getPdo();
 
-	public function removeStudent($id) {
-		$connect = $this->getPdo();
+        $insert = $pdo->prepare("DELETE FROM students WHERE id=:id");
+        $insert->execute(array(
+            ':id' => $id,
+        ));
 
-	    $insert = $connect->prepare("DELETE FROM students WHERE id=:id");
-	    $insert->execute(array(
-		    ':id' => $id
-	    ));
-
-	    return $insert;		
-	}
+        //return $insert;
+    }
 }

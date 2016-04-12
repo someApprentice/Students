@@ -1,44 +1,43 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Pimple\Container as Pimple;
+use App\Controller\RegisterAction;
+use App\Model\Gateway\StudentGateway;
 use App\Model\Helper\RegistrationHelper;
 use App\Model\Validators\Validations;
-use App\Model\Gateway\StudentGateway;
-use App\Controller\RegisterAction;
+use Pimple\Container as Pimple;
 
 $container = new Pimple();
 
 $container['PDO'] = function () {
-	$config = parse_ini_file('config.ini');
+    $config = parse_ini_file('config.ini');
 
-	$pdo = new \PDO(
-	    $config['db_dsn'],
-	    $config['db_user'],
-	    $config['db_password']
-	);
+    $pdo = new \PDO(
+        "mysql:host={$config['host']}; dbname={$config['name']}; charset=utf8",
+        $config['user'],
+        $config['password']
+    );
 
-	$pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+    $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-	$query = $pdo->prepare("SET sql_mode = 'STRICT_ALL_TABLES'");
-	$query->execute();
+    $query = $pdo->prepare("SET sql_mode = 'STRICT_ALL_TABLES'");
+    $query->execute();
 
-	return $pdo;
+    return $pdo;
 };
-
 
 $container['RegistrationHelper'] = function () {
-	return new RegistrationHelper();
-};
-
-$container['Validations'] = function () {
-	return new Validations();
+    return new RegistrationHelper();
 };
 
 $container['StudentGateway'] = function ($c) {
-	return new StudentGateway($c['PDO']);
+    return new StudentGateway($c['PDO']);
+};
+
+$container['Validations'] = function ($c) {
+    return new Validations($c['StudentGateway']);
 };
 
 $container['RegisterAction'] = function ($c) {
-	return new RegisterAction($c['RegistrationHelper'], $c['Validations'], $c['StudentGateway']);
+    return new RegisterAction($c['RegistrationHelper'], $c['StudentGateway'], $c['Validations']);
 };
