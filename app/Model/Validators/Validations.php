@@ -148,19 +148,27 @@ class Validations
         return $error;
     }
 
-    public function validateRegisterStudentForm(RegisterStudentForm $RegisterStudentForm)
+    public function validateRegisterStudentForm(RegisterStudentForm $registerStudentForm)
     {
-        $errors['name'] = $this->isNameInvalid($RegisterStudentForm->getName());
-        $errors['surname'] = $this->isNameInvalid($RegisterStudentForm->getSurname());
-        $errors['gender'] = $this->isGenderInvalid($RegisterStudentForm->getGender());
-        $errors['grupnumber'] = $this->isGrupNumberInvalid($RegisterStudentForm->getGrupnumber());
-        $errors['email'] = $this->isEmailInvalid($RegisterStudentForm->getEmail());
-        $errors['satscores'] = $this->isSATScoresInvalid($RegisterStudentForm->getSatScores());
-        $errors['yearofbirth'] = $this->isYearOfBirthInvalid($RegisterStudentForm->getYearOfBirth());
-        $errors['location'] = $this->isLocationInvalid($RegisterStudentForm->getLocation());
+        $errors['name'] = $this->isNameInvalid($registerStudentForm->getName());
+        $errors['surname'] = $this->isNameInvalid($registerStudentForm->getSurname());
+        $errors['gender'] = $this->isGenderInvalid($registerStudentForm->getGender());
+        $errors['grupnumber'] = $this->isGrupNumberInvalid($registerStudentForm->getGrupnumber());
+        $errors['email'] = $this->isEmailInvalid($registerStudentForm->getEmail());
+        $errors['satscores'] = $this->isSATScoresInvalid($registerStudentForm->getSatScores());
+        $errors['yearofbirth'] = $this->isYearOfBirthInvalid($registerStudentForm->getYearOfBirth());
+        $errors['location'] = $this->isLocationInvalid($registerStudentForm->getLocation());
 
-        $errors['password'] = $this->isPasswordInvalid($RegisterStudentForm->getPassword());
-        $errors['retrypassword'] = $this->isPasswordsMatch($RegisterStudentForm->getPassword(), $RegisterStudentForm->getRetryPassword());
+        $errors['password'] = $this->isPasswordInvalid($registerStudentForm->getPassword());
+        $errors['retrypassword'] = $this->isPasswordsMatch($registerStudentForm->getPassword(), $registerStudentForm->getRetryPassword());
+
+        return $errors;
+    }
+
+    public function validateLoginStudentForm(LoginStudentForm $loginStudentForm)
+    {
+        $errors['login'] = ('' === $loginStudentForm->getLogin()) ? "Login field is empty" : "";
+        $errors['password'] = ('' === $loginStudentForm->getPassword()) ? "Password field is empty" : "";
 
         return $errors;
     }

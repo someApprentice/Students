@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel='stylesheet' type='text/css' href='/css/stylesheets.css'/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+	<form method="post" name="login" action="/public/login.php?go=/public/index.php">
+		<label>
+			Input your email\name\surname <input type="email" name="login" pattern="(.+@.+\..+)|(\D{1,20})" required value="<?= (null !== $loginStudentForm->getLogin()) ? htmlspecialchars($loginStudentForm->getLame(), ENT_QUOTES) : '' ?>">
+			<?= (null !== $loginStudentForm->getError('login')) ? $loginStudentForm->getError('login') : '' ?>
+		</label>
+
+		<label>
+			Password <input type="password" name="password" pattern="(.){6,20}" required >
+			<span>
+				<?= (null !== $loginStudentForm->getError('password')) ? $loginStudentForm->getError('password') : '' ?>
+			</span>
+		</label>
+
+		<input type="submit" name="input" value="input">
+	</form>
+</body>
+</html>
