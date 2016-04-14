@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use app\Controller\LoginAction;
 use App\Controller\RegisterAction;
 use App\Model\Gateway\StudentGateway;
 use App\Model\Helper\RegistrationHelper;
@@ -40,4 +41,8 @@ $container['Validations'] = function ($c) {
 
 $container['RegisterAction'] = function ($c) {
     return new RegisterAction($c['RegistrationHelper'], $c['StudentGateway'], $c['Validations']);
+};
+
+$container['LoginAction'] = function ($c) {
+    return new LoginAction();
 };

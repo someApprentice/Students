@@ -12,75 +12,75 @@ class RegisterStudentForm extends Student
 
     public function setName()
     {
-        if (isset($_POST['name'])) {
-            $this->name = $_POST['name'];
+        if (isset($_POST['name']) and is_scalar($_POST['name'])) {
+            $this->name = trim($_POST['name']);
         }
     }
 
     public function setSurname()
     {
-        if (isset($_POST['surname'])) {
-            $this->surname = $_POST['surname'];
+        if (isset($_POST['surname']) and is_scalar($_POST['surname'])) {
+            $this->surname = trim($_POST['surname']);
         }
     }
 
     public function setGender()
     {
-        if (isset($_POST['gender'])) {
-            $this->gender = $_POST['gender'];
+        if (isset($_POST['gender']) and is_scalar($_POST['gender'])) {
+            $this->gender = trim($_POST['gender']);
         }
     }
 
     public function setGrupNumber()
     {
-        if (isset($_POST['grupnumber'])) {
-            $this->grupNumber = $_POST['grupnumber'];
+        if (isset($_POST['grupnumber']) and is_scalar($_POST['grupnumber'])) {
+            $this->grupNumber = trim($_POST['grupnumber']);
         }
 
     }
 
     public function setEmail()
     {
-        if (isset($_POST['email'])) {
-            $this->email = $_POST['email'];
+        if (isset($_POST['email']) and is_scalar($_POST['email'])) {
+            $this->email = trim($_POST['email']);
         }
 
     }
 
     public function setsatscores()
     {
-        if (isset($_POST['satscores'])) {
-            $this->satScores = $_POST['satscores'];
+        if (isset($_POST['satscores']) and is_scalar($_POST['satscores'])) {
+            $this->satScores = trim($_POST['satscores']);
         }
 
     }
 
     public function setYearOfBirth()
     {
-        if (isset($_POST['yearofbirth'])) {
-            $this->yearOfBirth = $_POST['yearofbirth'];
+        if (isset($_POST['yearofbirth']) and is_scalar($_POST['yearofbirth'])) {
+            $this->yearOfBirth = trim($_POST['yearofbirth']);
         }
     }
 
     public function setLocation()
     {
-        if (isset($_POST['location'])) {
-            $this->location = $_POST['location'];
+        if (isset($_POST['location']) and is_scalar($_POST['location'])) {
+            $this->location = trim($_POST['location']);
         }
     }
 
     public function setPassword()
     {
-        if (isset($_POST['password'])) {
-            $this->password = $_POST['password'];
+        if (isset($_POST['password']) and is_scalar($_POST['password'])) {
+            $this->password = trim($_POST['password']);
         }
 
     }
 
     public function setRetryPassword()
     {
-        if (isset($_POST['retryPassword'])) {
-            $this->retryPassword = $_POST['retrypassword'];
+        if (isset($_POST['retrypassword']) and is_scalar($_POST['retrypassword'])) {
+            $this->retryPassword = trim($_POST['retrypassword']);
         }
     }
 
