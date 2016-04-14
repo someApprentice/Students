@@ -8,72 +8,72 @@
 <body>
 	<form method="post" name="registraion" action="/public/registration.php?go=/public/index.php">
 		<label>
-			Name <input type="text" name="name" pattern="\D{1,20}" required value="<?= ($values['name']) ? htmlspecialchars($values['name'], ENT_QUOTES) : '' ?>">
+			Name <input type="text" name="name" pattern="\D{1,20}" required value="<?= (null !== $registerStudentForm->getName()) ? htmlspecialchars($registerStudentForm->getName(), ENT_QUOTES) : '' ?>">
 			<span>
-				<?= isset($errors['name']) ? $errors['name'] : '' ?>
+				<?= (null !== $registerStudentForm->getError('name')) ? $registerStudentForm->getError('name') : '' ?>
 			</span>
 		</label>
 
 		<label>
-			Surname <input type="text" name="surname" pattern="\D{1,20}" required value="<?= ($values['surname']) ? htmlspecialchars($values['surname'], ENT_QUOTES) : '' ?>">
+			Surname <input type="text" name="surname" pattern="\D{1,20}" required value="<?= (null !== $registerStudentForm->getSurname()) ? htmlspecialchars($registerStudentForm->getSurname(), ENT_QUOTES) : '' ?>">
 			<span>
-				<?= isset($errors['surname']) ? $errors['surname'] : '' ?>
+				<?= (null !== $registerStudentForm->getError('surname')) ? $registerStudentForm->getError('surname') : '' ?>
 			</span>
 		</label>
 
 		<label>
 			Gender <input type="radio" name="gender" value="Man">M <input type="radio" name="gender" value="Woman">W
 			<span>
-				<?= isset($errors['gender']) ? $errors['gender'] : '' ?>
+				<?= (null !== $registerStudentForm->getError('gender')) ? $registerStudentForm->getError('gender') : '' ?>
 			</span>
 		</label>
 
 		<label>
-			Grup Number <input type="text" name="grupnumber" pattern="[0-9a-zA-Z]{2,5}" required  value="<?= ($values['grupnumber']) ? htmlspecialchars($values['grupnumber'], ENT_QUOTES) : '' ?>">
+			Grup Number <input type="text" name="grupnumber" pattern="[0-9a-zA-Z]{2,5}" required  value="<?= (null !== $registerStudentForm->getGrupNumber()) ? htmlspecialchars($registerStudentForm->getGrupNumber(), ENT_QUOTES) : '' ?>">
 			<span>
-				<?= isset($errors['grupnumber']) ? $errors['grupnumber'] : '' ?>
+				<?= (null !== $registerStudentForm->getError('grupnumber')) ? $registerStudentForm->getError('grupnumber') : '' ?>
 			</span>
 		</label>
 
 		<label>
-			Email <input type="email" name="email" pattern=".+@.+\..+" required value="<?= ($values['email']) ? htmlspecialchars($values['email'], ENT_QUOTES) : '' ?>">
+			Email <input type="email" name="email" pattern=".+@.+\..+" required value="<?= (null !== $registerStudentForm->getEmail()) ? htmlspecialchars($registerStudentForm->getEmail(), ENT_QUOTES) : '' ?>">
 			<span>
-				<?= isset($errors['email']) ? $errors['email'] : '' ?>
+				<?= (null !== $registerStudentForm->getError('email')) ? $registerStudentForm->getError('email') : '' ?>
 			</span>
 		</label>
 
 		<label>
-			SAT Scores <input type="number" name="satscores" value="<?= ($values['satscores']) ? htmlspecialchars($values['satscores'], ENT_QUOTES) : '' ?>">
+			SAT Scores <input type="number" name="satscores" value="<?= (null !== $registerStudentForm->getSATScores()) ? htmlspecialchars($registerStudentForm->getSATScores(), ENT_QUOTES) : '' ?>">
 			<span>
-				<?= isset($errors['satscores']) ? $errors['satscores'] : '' ?>
+				<?= (null !== $registerStudentForm->getError('satscores')) ? $registerStudentForm->getError('satscores') : '' ?>
 			</span>
 		</label>
 
 		<label>
-			Year Of Birth <input type="text" name="yearofbirth" pattern="\d{4}" required  value="<?= ($values['yearofbirth']) ? htmlspecialchars($values['yearofbirth'], ENT_QUOTES)  : '' ?>">
+			Year Of Birth <input type="text" name="yearofbirth" pattern="\d{4}" required  value="<?= (null !== $registerStudentForm->getYearOfBirth()) ? htmlspecialchars($registerStudentForm->getYearOfBirth(), ENT_QUOTES)  : '' ?>">
 			<span>
-				<?= isset($errors['yearofbirth']) ? $errors['yearofbirth'] : '' ?>
+				<?= (null !== $registerStudentForm->getError('yearofbirth')) ? $registerStudentForm->getError('yearofbirth') : '' ?>
 			</span>
 		</label>
 
 		<label>
 			Location <input type="radio" name="location" value="local">Local <input type="radio" name="location" value="nonresident">Nonresident
 			<span>
-				<?= isset($errors['location']) ? $errors['location'] : '' ?>
+				<?= (null !== $registerStudentForm->getError('location')) ? $registerStudentForm->getError('location') : '' ?>
 			</span>
 		</label>
 
 		<label>
 			Password <input type="password" name="password" pattern="(.){6,20}" required >
 			<span>
-				<?= isset($errors['password']) ? $errors['password'] : '' ?>
+				<?= (null !== $registerStudentForm->getError('password')) ? $registerStudentForm->getError('password') : '' ?>
 			</span>
 		</label>
 
 		<label>
 			Retry Password <input type="password" name="retrypassword" pattern="(.){6,20}" required >
 			<span>
-				<?= isset($errors['retrypassword']) ? $errors['retrypassword'] : '' ?>
+				<?= (null !== $registerStudentForm->getError('retryPassword')) ? $registerStudentForm->getError('retrypassword') : '' ?>
 			</span>
 		</label>
 

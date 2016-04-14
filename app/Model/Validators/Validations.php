@@ -1,7 +1,7 @@
 <?php
 namespace App\Model\Validators;
 
-use App\Model\Entity\RegisterForm;
+use App\Model\Entity\RegisterStudentForm;
 use App\Model\Gateway\StudentGateway;
 
 class Validations
@@ -19,16 +19,27 @@ class Validations
         $this->studentGateway = $studentGateway;
     }
 
+    public function validLenght($string, $minLenght, $maxLenght)
+    {
+        $error = "";
+
+        if (mb_strlen($string) < $minLenght) {
+            $error = "It is too small min characters is $minLenght";
+        } else if (mb_strlen($string) > $max) {
+            $error = "It is too big max characters is $maxLenght";
+        }
+
+        return $error;
+    }
+
     public function isNameInvalid($name)
     {
         $error = "";
 
         if (!preg_match('/^[a-zA-Zа-яёА-ЯЁ\-\'\ ]{1,20}$/u', $name, $matches)) {
-            $error = "Incorrect name type: name contains invalid characters (valid characters is english or russian letters, hyphens, apostrophes and spaces).";
-        } elseif (mb_strlen($name) < 1) {
-            $error = "Incorrect name type: name is too short (minimum is 1 charters).";
-        } elseif (mb_strlen($name) > 20) {
-            $error = "Incorrect name type: name is too long (maximum is 20 charters).";
+            if (null == $error = validLenght($name, 1, 20)) {
+                $error = "Incorrect name type: name contains invalid characters (valid characters is english or russian letters, hyphens, apostrophes and spaces).";
+            }
         }
 
         return $error;
@@ -51,12 +62,8 @@ class Validations
         $error = "";
 
         if (!preg_match('/^[0-9a-zA-Z]{2,5}$/', $grupnumber, $matches)) {
-            $error = "Incorrect grup number: valid charcters that number and\or english latters";
-
-            if (mb_strlen($grupnumber) < 2) {
-                $error = "Grup number must be more than 2 symbols.";
-            } elseif (mb_strlen($grupnumber > 5)) {
-                $error = "Grup number must be less than 5 symbols.";
+            if (null == $error = $this->validLenght($grupnumber, 2, 5)) {
+                $error = "Incorrect grup number: valid charcters that number and\or english latters";
             }
         }
 
@@ -72,11 +79,9 @@ class Validations
         }
 
         if (!preg_match('/.+@.+\..+/i', $email, $matches)) {
-            $error = "Incorrect email type: email contains invalid characters (valid characters that english letters, numbers, dushes, and dots).";
-        } else if (mb_strlen($email) < 6) {
-            $error = "Email is too short.";
-        } else if (mb_strlen($email) > 255) {
-            $error = "Email must be less than 255 symbols.";
+            if (null == $error = $this->validLenght($email, 6, 255)) {
+                $error = "Incorrect email type: email contains invalid characters (valid characters that english letters, numbers, dushes, and dots).";
+            }
         }
 
         return $error;
@@ -126,12 +131,7 @@ class Validations
         $error = "";
 
         if (!preg_match('/^(.){6,20}$/', $password, $matches)) {
-            if (mb_strlen($password) < 6) {
-                $error = "Incorrect password type: Password is too short (minimum is 6 charters).";
-
-            } elseif (mb_strlen($password) > 20) {
-                $error = "Incorrect password type: Password is too long (maximum is 20 charters).";
-            }
+            $error = $this->validLenght($password, 6, 20);
         }
 
         return $error;
@@ -148,19 +148,19 @@ class Validations
         return $error;
     }
 
-    public function validateRegisterForm(RegisterForm $registerForm)
+    public function validateRegisterStudentForm(RegisterStudentForm $RegisterStudentForm)
     {
-        $errors['name'] = $this->isNameInvalid($registerForm->getName());
-        $errors['surname'] = $this->isNameInvalid($registerForm->getSurname());
-        $errors['gender'] = $this->isGenderInvalid($registerForm->getGender());
-        $errors['grupnumber'] = $this->isGrupNumberInvalid($registerForm->getGrupnumber());
-        $errors['email'] = $this->isEmailInvalid($registerForm->getEmail());
-        $errors['satscores'] = $this->isSATScoresInvalid($registerForm->getSatScores());
-        $errors['yearofbirth'] = $this->isYearOfBirthInvalid($registerForm->getYearOfBirth());
-        $errors['location'] = $this->isLocationInvalid($registerForm->getLocation());
+        $errors['name'] = $this->isNameInvalid($RegisterStudentForm->getName());
+        $errors['surname'] = $this->isNameInvalid($RegisterStudentForm->getSurname());
+        $errors['gender'] = $this->isGenderInvalid($RegisterStudentForm->getGender());
+        $errors['grupnumber'] = $this->isGrupNumberInvalid($RegisterStudentForm->getGrupnumber());
+        $errors['email'] = $this->isEmailInvalid($RegisterStudentForm->getEmail());
+        $errors['satscores'] = $this->isSATScoresInvalid($RegisterStudentForm->getSatScores());
+        $errors['yearofbirth'] = $this->isYearOfBirthInvalid($RegisterStudentForm->getYearOfBirth());
+        $errors['location'] = $this->isLocationInvalid($RegisterStudentForm->getLocation());
 
-        $errors['password'] = $this->isPasswordInvalid($registerForm->getPassword());
-        $errors['retrypassword'] = $this->isPasswordsMatch($registerForm->getPassword(), $registerForm->getRetryPassword());
+        $errors['password'] = $this->isPasswordInvalid($RegisterStudentForm->getPassword());
+        $errors['retrypassword'] = $this->isPasswordsMatch($RegisterStudentForm->getPassword(), $RegisterStudentForm->getRetryPassword());
 
         return $errors;
     }

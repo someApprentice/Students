@@ -4,14 +4,14 @@ namespace App\Model\Entity;
 class Student
 {
     protected $id = null;
-    protected $name;
-    protected $surname;
-    protected $gender;
-    protected $grupNumber;
-    protected $email;
-    protected $satScores;
-    protected $yearOfBirth;
-    protected $location;
+    protected $name = '';
+    protected $surname = '';
+    protected $gender = '';
+    protected $grupNumber = '';
+    protected $email = '';
+    protected $satScores = '';
+    protected $yearOfBirth = '';
+    protected $location = '';
 
     protected $hash;
     protected $salt;
@@ -42,7 +42,7 @@ class Student
         $this->gender = $gender;
     }
 
-    public function setgrupNumber($grupNumber)
+    public function setGrupNumber($grupNumber)
     {
         $this->grupNumber = $grupNumber;
     }
@@ -52,12 +52,12 @@ class Student
         $this->email = $email;
     }
 
-    public function setsatScores($satScores)
+    public function setSATScores($satScores)
     {
         $this->satScores = $satScores;
     }
 
-    public function seryearOfBirth($yearOfBirth)
+    public function serYearOfBirth($yearOfBirth)
     {
         $this->yearOfBirth = $yearOfBirth;
     }
@@ -109,7 +109,7 @@ class Student
         return $this->gender;
     }
 
-    public function getgrupNumber()
+    public function getGrupNumber()
     {
         return $this->grupNumber;
     }
@@ -119,12 +119,12 @@ class Student
         return $this->email;
     }
 
-    public function getsatScores()
+    public function getSATScores()
     {
         return $this->satScores;
     }
 
-    public function getyearOfBirth()
+    public function getYearOfBirth()
     {
         return $this->yearOfBirth;
     }

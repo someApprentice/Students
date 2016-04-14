@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-use App\Model\Entity\RegisterForm;
+use App\Model\Entity\RegisterStudentForm;
 use App\Model\Entity\Student;
 use App\Model\Gateway\StudentGateway;
 use App\Model\Helper\RegistrationHelper;
@@ -22,58 +22,33 @@ class RegisterAction
 
     public function register()
     {
-        $values = array(
-            "id" => '',
-            "name" => '',
-            "surname" => '',
-            "gender" => '',
-            "grupnumber" => '',
-            "email" => '',
-            "satscores" => '',
-            "yearofbirth" => '',
-            "location" => '',
-        );
-
-        $errors = array(
-            "id" => '',
-            "name" => '',
-            "surname" => '',
-            "gender" => '',
-            "grupnumber" => '',
-            "email" => '',
-            "satscores" => '',
-            "yearofbirth" => '',
-            "location" => '',
-            "password" => '',
-            "retrypassword" => '',
-        );
+        $registerStudentForm = new RegisterStudentForm();
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $values = $post = $this->registrationHelper->getPost();
+            $registerStudentForm->setName();
+            $registerStudentForm->setSurname();
+            $registerStudentForm->setGender();
+            $registerStudentForm->setGrupNumber();
+            $registerStudentForm->setEmail();
+            $registerStudentForm->setSATScores();
+            $registerStudentForm->setYearOfBirth();
+            $registerStudentForm->setLocation();
+            $registerStudentForm->setPassword();
+            $registerStudentForm->setRetryPassword();
 
-            $registerForm = new RegisterForm();
-            $registerForm->setName($post['name']);
-            $registerForm->setSurname($post['surname']);
-            $registerForm->setGender($post['gender']);
-            $registerForm->setGrupNumber($post['grupnumber']);
-            $registerForm->setEmail($post['email']);
-            $registerForm->setSATScores($post['satscores']);
-            $registerForm->setYearOfBirth($post['yearofbirth']);
-            $registerForm->setLocation($post['location']);
-            $registerForm->setPassword($post['password']);
-            $registerForm->setRetryPassword($post['retrypassword']);
+            $registerStudentForm->setErrors($this->validations->validateRegisterStudentForm($registerStudentForm));
 
-            if (!count(array_filter($errors = $this->validations->validateRegisterForm($registerForm)))) {
+            if (!count(array_filter($registerStudentForm->getErrors()))) {
                 $student = new Student();
-                $student->setName($post['name']);
-                $student->setSurname($post['surname']);
-                $student->setGender($post['gender']);
-                $student->setGrupNumber($post['grupnumber']);
-                $student->setEmail($post['email']);
-                $student->setSATScores($post['satscores']);
-                $student->serYearOfBirth($post['yearofbirth']);
-                $student->setLocation($post['location']);
-                $student->setPassword($post['password']);
+                $student->setName($registerStudentForm->getName());
+                $student->setSurname($registerStudentForm->getSurname());
+                $student->setGender($registerStudentForm->getGender());
+                $student->setGrupNumber($registerStudentForm->getGrupNumber());
+                $student->setEmail($registerStudentForm->getEmail());
+                $student->setSATScores($registerStudentForm->getSATScores());
+                $student->setYearOfBirth($registerStudentForm->getYearOfBirth());
+                $student->setLocation($registerStudentForm->getLocation());
+                $student->setPassword($registerStudentForm->getPassword());
 
                 $this->studentGateway->addStudent($student);
 
