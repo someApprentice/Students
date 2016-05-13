@@ -6,31 +6,28 @@ class LoginStudentForm
     protected $login = '';
     protected $password = '';
 
-    protected $errors = array();
-
-    public function setLogin()
+    function fillDataFromArray(array $data)
     {
-        if (isset($_POST['login']) and is_scalar($_POST['login'])) {
-            $this->login = trim($_POST['login']);
+        $allowed = [
+            'login',
+            'password',
+        ];
+
+        foreach ($allowed as $value) {
+            if (isset($data[$value]) and is_scalar($data[$value]) and property_exists($this, $value)) {
+                $this->$value = trim($data[$value]);
+            }
         }
     }
 
-    public function setPassword()
+    public function setLogin($login)
     {
-        if (isset($_POST['password']) and is_scalar($_POST['password'])) {
-            $this->password = trim($_POST['password']);
-        }
-
+        $this->login = $login;
     }
 
-    public function setErrors(array $errors)
+    public function setPassword($password)
     {
-        $this->errors = $errors;
-    }
-
-    public function setError($key, $value)
-    {
-        $this->errors[$key] = $value;
+        $this->password = $password;
     }
 
     public function getLogin()
@@ -46,12 +43,5 @@ class LoginStudentForm
     public function getErrors()
     {
         return $this->errors;
-    }
-
-    public function getError($key)
-    {
-        if (isset($this->errors[$key])) {
-            return $this->errors[$key];
-        }
     }
 }

@@ -9,6 +9,3 @@
         "fzaninotto/faker": "^1.5"
     }
 }
-
-//cd c:\program files\xampp\www\
-//php "composer.phar" require

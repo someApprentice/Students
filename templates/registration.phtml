@@ -8,72 +8,72 @@
 <body>
 	<form method="post" name="registraion" action="/public/registration.php?go=/public/index.php">
 		<label>
-			Name <input type="text" name="name" pattern="\D{1,20}" required value="<?= (null !== $registerStudentForm->getName()) ? htmlspecialchars($registerStudentForm->getName(), ENT_QUOTES) : '' ?>">
+			Name <input type="text" name="name" pattern="\D{1,20}" required value="<?= (null !== $registerStudentForm->getStudent()->getName()) ? htmlspecialchars($registerStudentForm->getStudent()->getName(), ENT_QUOTES) : '' ?>">
 			<span>
-				<?= (null !== $registerStudentForm->getError('name')) ? $registerStudentForm->getError('name') : '' ?>
+				<?= (null !== $errors->getError('name')) ? $errors->getError('name') : '' ?>
 			</span>
 		</label>
 
 		<label>
-			Surname <input type="text" name="surname" pattern="\D{1,20}" required value="<?= (null !== $registerStudentForm->getSurname()) ? htmlspecialchars($registerStudentForm->getSurname(), ENT_QUOTES) : '' ?>">
+			Surname <input type="text" name="surname" pattern="\D{1,20}" required value="<?= (null !== $registerStudentForm->getStudent()->getSurname()) ? htmlspecialchars($registerStudentForm->getStudent()->getSurname(), ENT_QUOTES) : '' ?>">
 			<span>
-				<?= (null !== $registerStudentForm->getError('surname')) ? $registerStudentForm->getError('surname') : '' ?>
+				<?= (null !== $errors->getError('surname')) ? $errors->getError('surname') : '' ?>
 			</span>
 		</label>
 
 		<label>
 			Gender <input type="radio" name="gender" value="Man">M <input type="radio" name="gender" value="Woman">W
 			<span>
-				<?= (null !== $registerStudentForm->getError('gender')) ? $registerStudentForm->getError('gender') : '' ?>
+				<?= (null !== $errors->getError('gender')) ? $errors->getError('gender') : '' ?>
 			</span>
 		</label>
 
 		<label>
-			Grup Number <input type="text" name="grupnumber" pattern="[0-9a-zA-Z]{2,5}" required  value="<?= (null !== $registerStudentForm->getGrupNumber()) ? htmlspecialchars($registerStudentForm->getGrupNumber(), ENT_QUOTES) : '' ?>">
+			Grup Number <input type="text" name="grupNumber" pattern="[0-9a-zA-Z]{2,5}" required  value="<?= (null !== $registerStudentForm->getStudent()->getGrupNumber()) ? htmlspecialchars($registerStudentForm->getStudent()->getGrupNumber(), ENT_QUOTES) : '' ?>">
 			<span>
-				<?= (null !== $registerStudentForm->getError('grupnumber')) ? $registerStudentForm->getError('grupnumber') : '' ?>
+				<?= (null !== $errors->getError('grupNumber')) ? $errors->getError('grupNumber') : '' ?>
 			</span>
 		</label>
 
 		<label>
-			Email <input type="email" name="email" pattern=".+@.+\..+" required value="<?= (null !== $registerStudentForm->getEmail()) ? htmlspecialchars($registerStudentForm->getEmail(), ENT_QUOTES) : '' ?>">
+			Email <input type="email" name="email" pattern=".+@.+\..+" required value="<?= (null !== $registerStudentForm->getStudent()->getEmail()) ? htmlspecialchars($registerStudentForm->getStudent()->getEmail(), ENT_QUOTES) : '' ?>">
 			<span>
-				<?= (null !== $registerStudentForm->getError('email')) ? $registerStudentForm->getError('email') : '' ?>
+				<?= (null !== $errors->getError('email')) ? $errors->getError('email') : '' ?>
 			</span>
 		</label>
 
 		<label>
-			SAT Scores <input type="number" name="satscores" value="<?= (null !== $registerStudentForm->getSATScores()) ? htmlspecialchars($registerStudentForm->getSATScores(), ENT_QUOTES) : '' ?>">
+			SAT Scores <input type="number" name="satScores" value="<?= (null !== $registerStudentForm->getStudent()->getSATScores()) ? htmlspecialchars($registerStudentForm->getStudent()->getSATScores(), ENT_QUOTES) : '' ?>">
 			<span>
-				<?= (null !== $registerStudentForm->getError('satscores')) ? $registerStudentForm->getError('satscores') : '' ?>
+				<?= (null !== $errors->getError('satScores')) ? $errors->getError('satScores') : '' ?>
 			</span>
 		</label>
 
 		<label>
-			Year Of Birth <input type="text" name="yearofbirth" pattern="\d{4}" required  value="<?= (null !== $registerStudentForm->getYearOfBirth()) ? htmlspecialchars($registerStudentForm->getYearOfBirth(), ENT_QUOTES)  : '' ?>">
+			Year Of Birth <input type="text" name="yearOfBirth" pattern="\d{4}" required  value="<?= (null !== $registerStudentForm->getStudent()->getYearOfBirth()) ? htmlspecialchars($registerStudentForm->getStudent()->getYearOfBirth(), ENT_QUOTES)  : '' ?>">
 			<span>
-				<?= (null !== $registerStudentForm->getError('yearofbirth')) ? $registerStudentForm->getError('yearofbirth') : '' ?>
+				<?= (null !== $errors->getError('yearOfBirth')) ? $errors->getError('yearOfBirth') : '' ?>
 			</span>
 		</label>
 
 		<label>
 			Location <input type="radio" name="location" value="local">Local <input type="radio" name="location" value="nonresident">Nonresident
 			<span>
-				<?= (null !== $registerStudentForm->getError('location')) ? $registerStudentForm->getError('location') : '' ?>
+				<?= (null !== $errors->getError('location')) ? $errors->getError('location') : '' ?>
 			</span>
 		</label>
 
 		<label>
 			Password <input type="password" name="password" pattern="(.){6,20}" required >
 			<span>
-				<?= (null !== $registerStudentForm->getError('password')) ? $registerStudentForm->getError('password') : '' ?>
+				<?= (null !== $errors->getError('password')) ? $errors->getError('password') : '' ?>
 			</span>
 		</label>
 
 		<label>
-			Retry Password <input type="password" name="retrypassword" pattern="(.){6,20}" required >
+			Retry Password <input type="password" name="retryPassword" pattern="(.){6,20}" required >
 			<span>
-				<?= (null !== $registerStudentForm->getError('retryPassword')) ? $registerStudentForm->getError('retrypassword') : '' ?>
+				<?= (null !== $errors->getError('retryPassword')) ? $errors->getError('retryPassword') : '' ?>
 			</span>
 		</label>
 

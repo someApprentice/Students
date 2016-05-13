@@ -6,20 +6,16 @@ $students = $container['StudentGateway']->getAllStudents();
 $errors = array();
 
 foreach ($students as $student) {
-    $error['name'] = $container['Validations']->isNameInvalid($student->getName());
-    $error['surname'] = $container['Validations']->isNameInvalid($student->getSurname());
-    $error['gender'] = $container['Validations']->isGenderInvalid($student->getGender());
-    $error['grupnumber'] = $container['Validations']->isGrupNumberInvalid($student->getGrupnumber());
-    $error['satscores'] = $container['Validations']->isSATScoresInvalid($student->getSatScores());
-    $error['yearofbirth'] = $container['Validations']->isYearOfBirthInvalid($student->getYearOfBirth());
-    $error['location'] = $container['Validations']->isLocationInvalid($student->getLocation());
+    $studentErrors = $container['StudentValidations']->validStudent($student);
 
-    if (count(array_filter($error))) {
+    if ($studentErrors->hasErrors()) {
         $errors[] = array(
             'id' => $student->getId(),
-            'errors' => $error,
+            'errors' => $studentErrors,
         );
     }
 }
 
+echo "<pre>";
 var_dump($errors);
+echo "</pre>";

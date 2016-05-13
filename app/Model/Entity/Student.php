@@ -1,7 +1,7 @@
 <?php
 namespace App\Model\Entity;
 
-class Student
+class Student implements Entity
 {
     protected $id = null;
     protected $name = '';
@@ -17,10 +17,53 @@ class Student
     protected $salt;
     protected $token;
 
-    public function __construct()
-    {
+    function fillDataFromArray(array $data)
+	{
+		$allowed = [
+			'name', 
+			'surname',
+			'gender',
+			'grupNumber',
+			'email',
+			'satScores',
+			'yearOfBirth',
+			'location'
+		];
 
-    }
+		foreach ($allowed as $value) {
+			if (isset($data[$value]) and is_scalar($data[$value]) and property_exists($this, $value)) {
+				$this->$value = trim($data[$value]);
+			}
+		}
+	}
+
+    function fillDataFromDB(array $result)
+	{
+		$allowed = [
+			'id',
+			'name', 
+			'surname',
+			'gender',
+			'grupNumber',
+			'email',
+			'satScores',
+			'yearOfBirth',
+			'location',
+			'hash',
+			'salt',
+			'token'
+		];
+
+		foreach ($allowed as $value) {
+			if (property_exists($this, $value)) {
+				$this->$value = $result[$value];
+			}
+		}
+	}
+
+	public function setProperty($property, $value) {
+		$this->$property = $value;
+	}
 
     public function setId($id)
     {
@@ -67,11 +110,11 @@ class Student
         $this->location = $location;
     }
 
-    public function setPassword($password)
+    public function setPassword($authorizer, $password)
     {
-        $this->salt = $this->generateSalt();
-        $this->hash = $this->hashPassword($password, $this->salt);
-        $this->token = $this->generateToken();
+        $this->salt = $authorizer->generateSalt();
+        $this->hash = $authorizer->hashPassword($password, $this->salt);
+        $this->token = $authorizer->generateToken();
     }
 
     public function setHash($hash)
@@ -87,6 +130,10 @@ class Student
     public function setToken($token)
     {
         $this->token = $token;
+    }
+
+    public function getProperty($property) {
+    	return $this->$property;
     }
 
     public function getId()
@@ -147,26 +194,5 @@ class Student
     public function getToken()
     {
         return $this->token;
-    }
-
-    public function generateSalt()
-    {
-        $salt = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.*-^%$#@!?%&%_=+<>[]{}0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.*-^%$#@!?%&%_=+<>[]{}'), 0, 44);
-
-        return $salt;
-    }
-
-    public function hashPassword($password, $salt)
-    {
-        $hash = md5($password . $salt);
-
-        return $hash;
-    }
-
-    public function generateToken()
-    {
-        $token = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 32);
-
-        return $token;
     }
 }

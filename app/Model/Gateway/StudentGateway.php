@@ -14,24 +14,13 @@ class StudentGateway extends TableDataGateWay
         $query = $pdo->prepare("SELECT * FROM students");
         $query->execute();
 
-        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
+        $results = $query->fetchAll(\PDO::FETCH_ASSOC);
 
         $students = new \SplObjectStorage();
 
-        foreach ($result as $value) {
+        foreach ($results as $result) {
             $student = new Student();
-            $student->setId($value['id']);
-            $student->setName($value['name']);
-            $student->setSurname($value['surname']);
-            $student->setGender($value['gender']);
-            $student->setGrupNumber($value['grupnumber']);
-            $student->setEmail($value['email']);
-            $student->setSATScores($value['satscores']);
-            $student->serYearOfBirth($value['yearofbirth']);
-            $student->setLocation($value['location']);
-            $student->setHash($value['password']);
-            $student->setSalt($value['salt']);
-            $student->setToken($value['token']);
+            $student->fillDataFromDB($result);
 
             $students->attach($student);
         }
@@ -54,18 +43,7 @@ class StudentGateway extends TableDataGateWay
         }
 
         $student = new Student();
-        $student->setId($result['id']);
-        $student->setName($result['name']);
-        $student->setSurname($result['surname']);
-        $student->setGender($result['gender']);
-        $student->setGrupNumber($result['grupnumber']);
-        $student->setEmail($result['email']);
-        $student->setSATScores($result['satscores']);
-        $student->serYearOfBirth($result['yearofbirth']);
-        $student->setLocation($result['location']);
-        $student->setHash($result['password']);
-        $student->setSalt($result['salt']);
-        $student->setToken($result['token']);
+        $student->fillDataFromDB($result);
 
         return $student;
     }
@@ -84,7 +62,7 @@ class StudentGateway extends TableDataGateWay
 	    		satscores,
 	    		yearofbirth,
 	    		location,
-	    		password,
+	    		hash,
 	    		salt,
 	    		token
  	    	) VALUES (

@@ -1,7 +1,6 @@
 <?php
 namespace App\Model\Validators;
 
-use App\Model\Entity\RegisterStudentForm;
 use App\Model\Gateway\StudentGateway;
 
 class Validations
@@ -25,7 +24,7 @@ class Validations
 
         if (mb_strlen($string) < $minLenght) {
             $error = "It is too small min characters is $minLenght";
-        } else if (mb_strlen($string) > $max) {
+        } else if (mb_strlen($string) > $maxLenght) {
             $error = "It is too big max characters is $maxLenght";
         }
 
@@ -148,22 +147,6 @@ class Validations
         return $error;
     }
 
-    public function validateRegisterStudentForm(RegisterStudentForm $registerStudentForm)
-    {
-        $errors['name'] = $this->isNameInvalid($registerStudentForm->getName());
-        $errors['surname'] = $this->isNameInvalid($registerStudentForm->getSurname());
-        $errors['gender'] = $this->isGenderInvalid($registerStudentForm->getGender());
-        $errors['grupnumber'] = $this->isGrupNumberInvalid($registerStudentForm->getGrupnumber());
-        $errors['email'] = $this->isEmailInvalid($registerStudentForm->getEmail());
-        $errors['satscores'] = $this->isSATScoresInvalid($registerStudentForm->getSatScores());
-        $errors['yearofbirth'] = $this->isYearOfBirthInvalid($registerStudentForm->getYearOfBirth());
-        $errors['location'] = $this->isLocationInvalid($registerStudentForm->getLocation());
-
-        $errors['password'] = $this->isPasswordInvalid($registerStudentForm->getPassword());
-        $errors['retrypassword'] = $this->isPasswordsMatch($registerStudentForm->getPassword(), $registerStudentForm->getRetryPassword());
-
-        return $errors;
-    }
 
     public function validateLoginStudentForm(LoginStudentForm $loginStudentForm)
     {

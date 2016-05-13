@@ -1,11 +1,17 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use app\Controller\LoginAction;
-use App\Controller\RegisterAction;
 use App\Model\Gateway\StudentGateway;
 use App\Model\Helper\RegistrationHelper;
 use App\Model\Validators\Validations;
+use App\Model\Validators\StudentValidations;
+use App\Model\Validators\RegisterStudentFormValidations;
+use App\Model\Validators\LoginStudentFormValidations;
+use App\Model\Helper\LoginHelper;
+use App\Model\Helper\LoginHelper as Authorizer;
+use App\Model\Cookies\StudentCookies;
+use App\Controller\RegisterAction;
+use App\Controller\LoginAction;
 use Pimple\Container as Pimple;
 
 $container = new Pimple();
@@ -27,8 +33,8 @@ $container['PDO'] = function () {
     return $pdo;
 };
 
-$container['RegistrationHelper'] = function () {
-    return new RegistrationHelper();
+$container['Authorizer'] = function () {
+    return new Authorizer();
 };
 
 $container['StudentGateway'] = function ($c) {
@@ -39,10 +45,30 @@ $container['Validations'] = function ($c) {
     return new Validations($c['StudentGateway']);
 };
 
+$container['StudentValidations'] = function ($c) {
+    return new StudentValidations($c['StudentGateway']);
+};
+
+$container['RegisterStudentFormValidations'] = function ($c) {
+    return new RegisterStudentFormValidations($c['StudentGateway'], $c['StudentValidations']);
+};
+
+$container['LoginStudentFormValidations'] = function ($c) {
+    return new LoginStudentFormValidations();
+};
+
+$container['StudentCookies'] = function ($c) {
+	return new StudentCookies();
+};
+
 $container['RegisterAction'] = function ($c) {
-    return new RegisterAction($c['RegistrationHelper'], $c['StudentGateway'], $c['Validations']);
+    return new RegisterAction($c['Authorizer'], $c['StudentGateway'], $c['RegisterStudentFormValidations']);
+};
+
+$container['LoginHelper'] = function () {
+    return new LoginHelper();
 };
 
 $container['LoginAction'] = function ($c) {
-    return new LoginAction();
+    return new LoginAction($c['StudentGateway'], $c['LoginStudentFormValidations'], $c['LoginHelper'], $c['StudentCookies']);
 };

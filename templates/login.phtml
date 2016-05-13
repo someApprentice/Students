@@ -8,14 +8,14 @@
 <body>
 	<form method="post" name="login" action="/public/login.php?go=/public/index.php">
 		<label>
-			Input your email\name\surname <input type="email" name="login" pattern="(.+@.+\..+)|(\D{1,20})" required value="<?= (null !== $loginStudentForm->getLogin()) ? htmlspecialchars($loginStudentForm->getLame(), ENT_QUOTES) : '' ?>">
-			<?= (null !== $loginStudentForm->getError('login')) ? $loginStudentForm->getError('login') : '' ?>
+			Input your email\name\surname <input type="text" name="login" pattern="(.+@.+\..+)|(\D{1,20})" required value="<?= (null !== $loginStudentForm->getLogin()) ? htmlspecialchars($loginStudentForm->getLogin(), ENT_QUOTES) : '' ?>">
+			<?= (null !== $errors->getError('login')) ? $errors->getError('login') : '' ?>
 		</label>
 
 		<label>
 			Password <input type="password" name="password" pattern="(.){6,20}" required >
 			<span>
-				<?= (null !== $loginStudentForm->getError('password')) ? $loginStudentForm->getError('password') : '' ?>
+				<?= (null !== $errors->getError('password')) ? $errors->getError('password') : '' ?>
 			</span>
 		</label>
 

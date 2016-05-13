@@ -1,21 +1,22 @@
 <?php
 namespace App\Controller;
 
-use App\Model\Entity\RegisterStudentForm;
-use App\Model\Entity\Student;
+use App\Model\Helper\LoginHelper as Authorizer;
 use App\Model\Gateway\StudentGateway;
-use App\Model\Helper\RegistrationHelper;
-use App\Model\Validators\Validations;
+use App\Model\Entity\RegisterStudentForm;
+use App\Model\Validators\RegisterStudentFormValidations;
+use App\Model\Errors\ErrorList;
+use App\Model\Entity\Student;
 
 class RegisterAction
 {
-    protected $registrationHelper;
+    protected $authorizer;
     protected $studentGateway;
     protected $validations;
 
-    public function __construct(RegistrationHelper $registrationHelper, StudentGateway $studentGateway, Validations $validations)
+    public function __construct(Authorizer $authorizer, StudentGateway $studentGateway, RegisterStudentFormValidations $validations)
     {
-        $this->registrationHelper = $registrationHelper;
+        $this->authorizer = $authorizer;
         $this->validations = $validations;
         $this->studentGateway = $studentGateway;
     }
@@ -24,35 +25,21 @@ class RegisterAction
     {
         $registerStudentForm = new RegisterStudentForm();
 
+        $errors = new ErrorList;
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $registerStudentForm->setName();
-            $registerStudentForm->setSurname();
-            $registerStudentForm->setGender();
-            $registerStudentForm->setGrupNumber();
-            $registerStudentForm->setEmail();
-            $registerStudentForm->setSATScores();
-            $registerStudentForm->setYearOfBirth();
-            $registerStudentForm->setLocation();
-            $registerStudentForm->setPassword();
-            $registerStudentForm->setRetryPassword();
+            $registerStudentForm->fillDataFromArray($_POST);
 
-            $registerStudentForm->setErrors($this->validations->validateRegisterStudentForm($registerStudentForm));
+            $errors = $this->validations->validRegisterStudentForm($registerStudentForm);
 
-            if (!count(array_filter($registerStudentForm->getErrors()))) {
-                $student = new Student();
-                $student->setName($registerStudentForm->getName());
-                $student->setSurname($registerStudentForm->getSurname());
-                $student->setGender($registerStudentForm->getGender());
-                $student->setGrupNumber($registerStudentForm->getGrupNumber());
-                $student->setEmail($registerStudentForm->getEmail());
-                $student->setSATScores($registerStudentForm->getSATScores());
-                $student->setYearOfBirth($registerStudentForm->getYearOfBirth());
-                $student->setLocation($registerStudentForm->getLocation());
-                $student->setPassword($registerStudentForm->getPassword());
+            if (!$errors->hasErrors()) {
+                $registerStudentForm->setStudentPassword($this->authorizer);
 
-                $this->studentGateway->addStudent($student);
+                $this->studentGateway->addStudent($registerStudentForm->getStudent());
 
-                $this->registrationHelper->redirect();
+                //login
+
+                $this->authorizer->redirect($_GET['go']);
             }
         }
 

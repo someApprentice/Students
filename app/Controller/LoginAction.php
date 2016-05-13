@@ -1,63 +1,80 @@
 <?php
 namespace App\Controller;
 
-use App\Model\Entity\LoginStudentForm;
-use App\Model\Entity\Student;
 use App\Model\Gateway\StudentGateway;
-
-use App\Model\Validators\Validations;
+use App\Model\Validators\LoginStudentFormValidations;
+use App\Model\Helper\LoginHelper;
+use App\Model\Entity\LoginStudentForm;
+use App\Model\Errors\ErrorList;
+use App\Model\Entity\Student;
+use App\Model\Cookies\StudentCookies;
 
 class LoginAction
 {
-
     protected $studentGateway;
     protected $validations;
+    protected $loginHelper;
 
-    public function __construct(StudentGateway $studentGateway, Validations $validations)
+    public function __construct(StudentGateway $studentGateway, LoginStudentFormValidations $validations, LoginHelper $loginHelper, StudentCookies $studentCookies)
     {
-
         $this->validations = $validations;
         $this->studentGateway = $studentGateway;
+        $this->loginHelper = $loginHelper;
+        $this->studentCookies = $studentCookies;
+    }
+
+    public function isLoggedIn()
+    { 
+        if (isset($_COOKIE['id'])) {
+            $student = $this->studentGateway->getStudentByСolumn('id', $_COOKIE['id']);
+
+            if ($student->getToken() == $_COOKIE['token']) {
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function login()
-
+    {
         $loginStudentForm = new LoginStudentForm();
 
+        $errors = new ErrorList();
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $loginStudentForm->setLogin();
-            $loginStudentForm->setPassword();
+            $loginStudentForm->fillDataFromArray($_POST);
 
-            $loginStudentForm->setErrors($this->validations->validateLoginStudentForm($loginStudentForm));
+            $errors = $this->validations->validLoginStudentForm($loginStudentForm);
 
-            if (!count(array_filter($registerStudentForm->getErrors()))) {
-                $student['email'] = $studentGateway->getStudentByСolumn('email', $loginStudentForm->getLogin());
-                $student['surname'] = $studentGateway->getStudentByСolumn('surname', $loginStudentForm->getLogin());
-                $student['name'] = $studentGateway->getStudentByСolumn('name', $loginStudentForm->getLogin());                
+            if (!$errors->hasErrors()) {
+                $potentialStudents['email'] = $this->studentGateway->getStudentByСolumn('email', $loginStudentForm->getLogin());
+                $potentialStudents['surname'] = $this->studentGateway->getStudentByСolumn('surname', $loginStudentForm->getLogin());
+                $potentialStudents['name'] = $this->studentGateway->getStudentByСolumn('name', $loginStudentForm->getLogin());
 
-                //Проходимся по каждому возможному соответсвию хэша из БД и хэша из формы, и если оно есть, то останавливаем цикл и используем эту сущность для работы дальше.
-                //Иначе удаляем её из массива, и если сущностей (больше) нет, то возвращеаем ошибку
-                foreach ($student as $key => $value) {
-                    if (!count(array_filter($student))) {
-                        if ($value->getHash() == $value->hashPassword($loginStudentForm->getPassword(), $value->getSalt())) {
-                            $student = $value;
+                $potentialStudents = array_filter($potentialStudents);
+               
+                if (count($potentialStudents)) {
+                    foreach ($potentialStudents as $potentialStudent) {
+                        if ($this->loginHelper->isPasswordValid($potentialStudent, $loginStudentForm->getPassword())) {
+                            $student = $potentialStudent;
 
-                            //cookies
+                            $errors->unsetError('login');
 
-                            $_SESSION['id'] = $student->getId();
-                            $_SESSION['name'] = $student->getName();
-                            $_SESSION['surname'] = $student->getSurname();
-                            $_SESSION['token'] = $student->getToken();
-                            
-                            //redirect
+                            $this->studentCookies->createCookies($student);
+
+                            $this->loginHelper->redirect($_GET['go']);
 
                             break;
                         } else {
-                            unset($student[$key]);
+                            $errors->setError('login', "Incorrect username or password");
+
+                            continue;
                         }
-                    } else {
-                        $loginStudentForm->getError('login', "Incorrect username or password")
                     }
+                } else {
+                    $errors->setError('login', "Incorrect username or password");
                 }
             }
         }
@@ -65,4 +82,13 @@ class LoginAction
         include __DIR__ . '/../../templates/login.phtml';
     }
 
+    public function logout() {
+        if (isset($_GET['token']) and $this->isLoggedIn()) {
+            if ($_GET['token'] == $_COOKIE['token']) {
+                $this->studentCookies->deleteCookies();
+            }
+        }
+
+        $this->loginHelper->redirect($_GET['go']);
+    }
 }
