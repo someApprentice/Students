@@ -1,6 +1,8 @@
 <?php
 namespace App\Model\Entity;
 
+use App\Model\Helper\LoginHelper as Authorizer;
+
 class Student implements Entity
 {
     protected $id = null;
@@ -37,26 +39,11 @@ class Student implements Entity
 		}
 	}
 
-    function fillDataFromDB(array $result)
+    function fillAllData(array $data)
 	{
-		$allowed = [
-			'id',
-			'name', 
-			'surname',
-			'gender',
-			'grupNumber',
-			'email',
-			'satScores',
-			'yearOfBirth',
-			'location',
-			'hash',
-			'salt',
-			'token'
-		];
-
-		foreach ($allowed as $value) {
-			if (property_exists($this, $value)) {
-				$this->$value = $result[$value];
+		foreach ($data as $property => $value) {
+			if (property_exists($this, $property)) {
+				$this->$property = $value;
 			}
 		}
 	}
@@ -110,11 +97,11 @@ class Student implements Entity
         $this->location = $location;
     }
 
-    public function setPassword($authorizer, $password)
+    public function setPassword($password)
     {
-        $this->salt = $authorizer->generateSalt();
-        $this->hash = $authorizer->hashPassword($password, $this->salt);
-        $this->token = $authorizer->generateToken();
+        $this->salt = Authorizer::generateSalt();
+        $this->hash = Authorizer::hashPassword($password, $this->salt);
+        $this->token = Authorizer::generateToken();
     }
 
     public function setHash($hash)

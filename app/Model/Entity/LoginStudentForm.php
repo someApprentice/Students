@@ -3,13 +3,13 @@ namespace App\Model\Entity;
 
 class LoginStudentForm
 {
-    protected $login = '';
+    protected $email = '';
     protected $password = '';
 
     function fillDataFromArray(array $data)
     {
         $allowed = [
-            'login',
+            'email',
             'password',
         ];
 
@@ -30,9 +30,9 @@ class LoginStudentForm
         $this->password = $password;
     }
 
-    public function getLogin()
+    public function getEmail()
     {
-        return $this->login;
+        return $this->email;
     }
 
     public function getPassword()

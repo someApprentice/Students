@@ -13,21 +13,21 @@ class LoginHelper extends Helper
 		return false;
 	}
 
-    public function generateSalt()
+    public static function generateSalt()
     {
         $salt = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.*-^%$#@!?%&%_=+<>[]{}0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.*-^%$#@!?%&%_=+<>[]{}'), 0, 44);
 
         return $salt;
     }
 
-    public function hashPassword($password, $salt)
+    public static function hashPassword($password, $salt)
     {
         $hash = md5($password . $salt);
 
         return $hash;
     }
 
-    public function generateToken()
+    public static function generateToken()
     {
         $token = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 32);
 

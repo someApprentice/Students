@@ -31,9 +31,14 @@ class RegisterStudentForm
 		}
 	}
 
-	function setStudentPassword($authorizer)
+    function setStudent(Student $student)
+    {
+        $this->student = $student;
+    }
+
+	function setStudentPassword()
 	{
-		$this->student->setPassword($authorizer, $this->password);
+		$this->student->setPassword($this->password);
 	}
 
     public function setPassword($password)

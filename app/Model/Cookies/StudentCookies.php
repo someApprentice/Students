@@ -7,14 +7,6 @@ class StudentCookies implements Cookies
 {
 	protected $allowed = [
 			'id',
-			'name', 
-			'surname',
-			'gender',
-			'grupNumber',
-			'email',
-			'satScores',
-			'yearOfBirth',
-			'location',
 			'token'
 		];
 

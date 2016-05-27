@@ -10,8 +10,8 @@ class LoginStudentFormValidations
 	{
 		$errors = new ErrorList();
 
-		if ($loginStudentForm->getLogin() === '') {
-			$errors->setError('login', 'Login field is empty');
+		if ($loginStudentForm->getEmail() === '') {
+			$errors->setError('login', 'Email field is empty');
 		}
 
 		if ($loginStudentForm->getPassword() === '') {

@@ -49,30 +49,14 @@ class LoginAction
             $errors = $this->validations->validLoginStudentForm($loginStudentForm);
 
             if (!$errors->hasErrors()) {
-                $potentialStudents['email'] = $this->studentGateway->getStudentByСolumn('email', $loginStudentForm->getLogin());
-                $potentialStudents['surname'] = $this->studentGateway->getStudentByСolumn('surname', $loginStudentForm->getLogin());
-                $potentialStudents['name'] = $this->studentGateway->getStudentByСolumn('name', $loginStudentForm->getLogin());
+                $student = $this->studentGateway->getStudentByСolumn('email', $loginStudentForm->getEmail());
 
-                $potentialStudents = array_filter($potentialStudents);
-               
-                if (count($potentialStudents)) {
-                    foreach ($potentialStudents as $potentialStudent) {
-                        if ($this->loginHelper->isPasswordValid($potentialStudent, $loginStudentForm->getPassword())) {
-                            $student = $potentialStudent;
+                if ($student and $this->loginHelper->isPasswordValid($student, $loginStudentForm->getPassword())) {
+                    $this->studentCookies->createCookies($student);
 
-                            $errors->unsetError('login');
+                    $this->loginHelper->redirect($_GET['go']);
 
-                            $this->studentCookies->createCookies($student);
-
-                            $this->loginHelper->redirect($_GET['go']);
-
-                            break;
-                        } else {
-                            $errors->setError('login', "Incorrect username or password");
-
-                            continue;
-                        }
-                    }
+                    exit();
                 } else {
                     $errors->setError('login', "Incorrect username or password");
                 }

@@ -2,7 +2,6 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Model\Gateway\StudentGateway;
-use App\Model\Helper\RegistrationHelper;
 use App\Model\Validators\Validations;
 use App\Model\Validators\StudentValidations;
 use App\Model\Validators\RegisterStudentFormValidations;
@@ -12,6 +11,8 @@ use App\Model\Helper\LoginHelper as Authorizer;
 use App\Model\Cookies\StudentCookies;
 use App\Controller\RegisterAction;
 use App\Controller\LoginAction;
+use App\Controller\SearchAction;
+
 use Pimple\Container as Pimple;
 
 $container = new Pimple();
@@ -61,14 +62,18 @@ $container['StudentCookies'] = function ($c) {
 	return new StudentCookies();
 };
 
-$container['RegisterAction'] = function ($c) {
-    return new RegisterAction($c['Authorizer'], $c['StudentGateway'], $c['RegisterStudentFormValidations']);
-};
-
 $container['LoginHelper'] = function () {
     return new LoginHelper();
 };
 
 $container['LoginAction'] = function ($c) {
     return new LoginAction($c['StudentGateway'], $c['LoginStudentFormValidations'], $c['LoginHelper'], $c['StudentCookies']);
+};
+
+$container['RegisterAction'] = function ($c) {
+    return new RegisterAction($c['StudentGateway'], $c['RegisterStudentFormValidations'], $c['LoginAction']);
+};
+
+$container['SearchAction'] = function ($c) {
+    return new SearchAction($c['StudentGateway']);
 };

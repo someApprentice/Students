@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search</title>
+    <link rel='stylesheet' type='text/css' href='/css/stylesheets.css'/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+	<form method="get" name="search" action="/public/search.php">
+		<label>
+			Search <input type="text" name="query" value="<?= (null !== $search->getQuery()) ? htmlspecialchars($search->getQuery(), ENT_QUOTES) : '' ?>">
+		</label>
+
+		<input type="submit" name="input" value="input">
+	</form>
+
+	<?php if ($search->getResults()) : ?>
+		<?php if ($search->getResults()->count() != 0) : ?>
+			<table>
+				<tr>
+					<th>Name</th>
+					<th>Surname</th>
+					<th>Gender</th>
+					<th>Grup Number</th>
+					<th>Email</th>
+					<th>SAT Scores</th>
+					<th>Year Of Birth</th>
+					<th>Location</th>
+				</tr>
+
+				<?php foreach ($search->getResults() as $student) :?>
+					<tr>
+						<td><?= $student->getName() ?></td>
+						<td><?= $student->getSurname() ?></td>
+						<td><?= $student->getGender() ?></td>
+						<td><?= $student->getGrupNumber() ?></td>
+						<td><?= $student->getEmail() ?> </td>
+						<td><?= $student->getSATscores() ?></td>
+						<td><?= $student->getYearOfBirth() ?></td>
+						<td><?= $student->getLocation() ?></td>
+					</tr>
+				<?php endforeach; ?>
+				
+			</table>
+		<?php else: ?>
+			No results.
+		<?php endif; ?>
+	<?php endif; ?>
+</body>
+</html>

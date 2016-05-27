@@ -28,6 +28,11 @@ class StudentValidations extends Validations
 			'parameters' => ['getGrupnumber']
 		],
 
+		'email' => [
+			'validator' => 'isEmailInvalid',
+			'parameters' => ['getEmail']
+		],
+
 		'satscores' => [
 			'validator' => 'isSATScoresInvalid',
 			'parameters' => ['getSatScores']
