@@ -17,7 +17,7 @@ class RegisterAction
     protected $loginAction;
     protected $studentCookies;
 
-    public function __construct(StudentGateway $studentGateway, RegisterStudentFormValidations $validations, LoginAction $loginAction, $studentCookies)
+    public function __construct(StudentGateway $studentGateway, RegisterStudentFormValidations $validations, LoginAction $loginAction, StudentCookies $studentCookies)
     {
         $this->validations = $validations;
         $this->studentGateway = $studentGateway;
