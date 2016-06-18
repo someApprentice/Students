@@ -8,22 +8,26 @@ use App\Model\Errors\ErrorList;
 use App\Model\Entity\Student;
 use App\Model\Helper\Helper;
 use App\Controller\LoginAction;
+use App\Model\Cookies\StudentCookies;
 
 class RegisterAction
 {
     protected $studentGateway;
     protected $validations;
     protected $loginAction;
+    protected $studentCookies;
 
-    public function __construct(StudentGateway $studentGateway, RegisterStudentFormValidations $validations, LoginAction $loginAction)
+    public function __construct(StudentGateway $studentGateway, RegisterStudentFormValidations $validations, LoginAction $loginAction, $studentCookies)
     {
         $this->validations = $validations;
         $this->studentGateway = $studentGateway;
         $this->loginAction = $loginAction;
+        $this->studentCookies = $studentCookies;
     }
 
     public function register()
     {
+
         $registerStudentForm = new RegisterStudentForm();
 
         if (Helper::validCSRFtoken($_GET['token']) and $this->loginAction->isLoggedIn()) {
@@ -49,7 +53,7 @@ class RegisterAction
 
                         $this->studentGateway->updateStudent($registerStudentForm->getStudent());
 
-                        $this->loginAction->login();
+                        $this->studentCookies->createCookies($registerStudentForm->getStudent());
                     } else {
                         $this->studentGateway->updateStudent($registerStudentForm->getStudent());
                     }

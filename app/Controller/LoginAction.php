@@ -14,6 +14,7 @@ class LoginAction
     protected $studentGateway;
     protected $validations;
     protected $loginHelper;
+    protected $studentCookies;
 
     public function __construct(StudentGateway $studentGateway, LoginStudentFormValidations $validations, LoginHelper $loginHelper, StudentCookies $studentCookies)
     {
@@ -67,7 +68,7 @@ class LoginAction
     }
 
     public function logout() {
-        if ($this->loginHelper->checkCSRFtoken($_GET['token']) and $this->isLoggedIn()) {
+        if ($this->loginHelper->validCSRFtoken($_GET['token']) and $this->isLoggedIn()) {
                 $this->studentCookies->deleteCookies();
         }
 

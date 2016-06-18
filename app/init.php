@@ -71,7 +71,7 @@ $container['LoginAction'] = function ($c) {
 };
 
 $container['RegisterAction'] = function ($c) {
-    return new RegisterAction($c['StudentGateway'], $c['RegisterStudentFormValidations'], $c['LoginAction']);
+    return new RegisterAction($c['StudentGateway'], $c['RegisterStudentFormValidations'], $c['LoginAction'], $c['StudentCookies']);
 };
 
 $container['SearchAction'] = function ($c) {
