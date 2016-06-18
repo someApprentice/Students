@@ -47,12 +47,14 @@ class RegisterAction
                     if ($registerStudentForm->getPassword() != "") {
                         $registerStudentForm->setStudentPassword();
 
+                        $this->studentGateway->updateStudent($registerStudentForm->getStudent());
+
                         $this->loginAction->login();
+                    } else {
+                        $this->studentGateway->updateStudent($registerStudentForm->getStudent());
                     }
-
-                    $this->studentGateway->updateStudent($registerStudentForm->getStudent());
-
-                     Helper::redirect('/public/index.php?notify=Success');
+                    
+                    Helper::redirect('/public/index.php?notify=Success');
                 } else {
                     $registerStudentForm->setStudentPassword();
 
