@@ -29,8 +29,9 @@ class RegisterStudentFormValidations extends Validations
         $this->studentValidations = $studentValidations;
     }
 
-	public function validRegisterStudentForm(RegisterStudentForm $registerStudentForm)
+	public function validRegisterStudentForm(RegisterStudentForm $registerStudentForm, $editMode = false)
 	{
+
 		$errors = $this->studentValidations->validStudent($registerStudentForm->getStudent());
 
 		foreach ($this->validations as $field => $validator) {
@@ -38,6 +39,11 @@ class RegisterStudentFormValidations extends Validations
 
 			foreach ($validator['parameters'] as $parameter) {
 				$parameters[] = call_user_func([$registerStudentForm, $parameter]);
+			}
+
+			//Если включен режим редактирования, то к валидации пароля добавляем параметр сообщающий об этом.
+			if ($field = 'password' and $editMode) {
+				$parameters[] = true;
 			}
 
 			$errors->setError($field, call_user_func_array([$this, $validator['validator']], $parameters));

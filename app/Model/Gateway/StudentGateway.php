@@ -146,24 +146,7 @@ class StudentGateway extends TableDataGateWay
     {
         $pdo = $this->getPdo();
 
-        $query = $pdo->prepare("SELECT * FROM students WHERE
-            name LIKE :search
-            OR
-            surname LIKE :search
-            OR
-            gender LIKE :search
-            OR
-            grupnumber LIKE :search
-            OR
-            email LIKE :search
-            OR
-            satscores LIKE :search
-            OR
-            yearofbirth LIKE :search
-            OR
-            location LIKE :search            
-        ");
-
+        $query = $pdo->prepare("SELECT * FROM students WHERE CONCAT(name, surname, grupnumber, email, satscores, yearofbirth, location) LIKE :search");
         $query->bindValue(':search', "%{$search}%");
         $query->execute();
 

@@ -26,59 +26,45 @@ class RegisterAction
     {
         $registerStudentForm = new RegisterStudentForm();
 
+        if (Helper::validCSRFtoken($_GET['token']) and $this->loginAction->isLoggedIn()) {
+            $student = $this->studentGateway->getStudentByСolumn('id', $_COOKIE['id']);
+            $registerStudentForm->setStudent($student);
+        }
+
         $errors = new ErrorList;
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $registerStudentForm->fillDataFromArray($_POST);
 
-            $errors = $this->validations->validRegisterStudentForm($registerStudentForm);
+            if (Helper::validCSRFtoken($_GET['token']) and $this->loginAction->isLoggedIn()) {
+                $errors = $this->validations->validRegisterStudentForm($registerStudentForm, true); // true - $editMode
+            } else {
+                $errors = $this->validations->validRegisterStudentForm($registerStudentForm);
+            }      
 
             if (!$errors->hasErrors()) {
-                $registerStudentForm->setStudentPassword();
+                if (Helper::validCSRFtoken($_GET['token']) and $this->loginAction->isLoggedIn()) {
+                    if ($registerStudentForm->getPassword() != "") {
+                        $registerStudentForm->setStudentPassword();
 
-                $this->studentGateway->addStudent($registerStudentForm->getStudent());
+                        $this->loginAction->login();
+                    }
 
-                $this->loginAction->login();
+                    $this->studentGateway->updateStudent($registerStudentForm->getStudent());
 
-                Helper::redirect($_GET['go']);
+                     Helper::redirect('/public/index.php?notify=Success');
+                } else {
+                    $registerStudentForm->setStudentPassword();
+
+                    $this->studentGateway->addStudent($registerStudentForm->getStudent());
+
+                    $this->loginAction->login();
+
+                    Helper::redirect($_GET['go']);
+                }  
             }
         }
 
         include __DIR__ . '/../../templates/registration.phtml';
     }
-
-    public function edit()
-    {
-        if (isset($_GET['token']) and $this->loginAction->isLoggedIn()) {
-            if ($_GET['token'] == $_COOKIE['token']) {
-                $student = $this->studentGateway->getStudentByСolumn('id', $_COOKIE['id']);
-
-                $registerStudentForm = new RegisterStudentForm();
-                $registerStudentForm->setStudent($student);
-
-                $errors = new ErrorList;
-
-                $success = false;
-
-                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    $registerStudentForm->fillDataFromArray($_POST);
-
-                    $errors = $this->validations->validRegisterStudentForm($registerStudentForm);
-
-                    if (!$errors->hasErrors()) {
-                        $registerStudentForm->setStudentPassword();
-
-                        $this->studentGateway->updateStudent($registerStudentForm->getStudent());
-
-                        $success = true;
-                    }
-                }
-
-                include __DIR__ . '/../../templates/edit.phtml';
-            }
-        } else {
-            Helper::redirect();
-        }
-    }
-
 }

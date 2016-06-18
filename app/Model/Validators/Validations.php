@@ -69,12 +69,14 @@ class Validations
         return $error;
     }
 
-    public function isEmailInvalid($email)
+    public function isEmailInvalid($email, $skipStudentWithId = null)
     {
         $error = "";
 
         if ($student = $this->studentGateway->getStudentByСolumn('email', $email)) {
-            $error = "Email already used.";
+            if ($student->getId() != $skipStudentWithId) {
+                $error = "Email already used.";
+            }  
         }
 
         if (!preg_match('/.+@.+\..+/i', $email, $matches)) {
@@ -125,9 +127,13 @@ class Validations
         return $error;
     }
 
-    public function isPasswordInvalid($password)
+    public function isPasswordInvalid($password, $editMode = false)
     {
         $error = "";
+
+        if ($editMode and $password = "") {
+            return $error;
+        }
 
         if (!preg_match('/^(.){6,20}$/', $password, $matches)) {
             $error = $this->validLenght($password, 6, 20);

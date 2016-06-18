@@ -11,4 +11,13 @@ class Helper
 
 	    header("Location: " . $location);
 	}
+
+	public function validCSRFtoken($token)
+	{
+		if ($token == $_COOKIE['token']) {
+			return true;
+		}
+
+		return false;
+	}
 }

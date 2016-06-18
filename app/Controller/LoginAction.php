@@ -28,7 +28,7 @@ class LoginAction
         if (isset($_COOKIE['id'])) {
             $student = $this->studentGateway->getStudentByСolumn('id', $_COOKIE['id']);
 
-            if ($student->getToken() == $_COOKIE['token']) {
+            if ($this->loginHelper->validCSRFtoken($student->getToken())) {
 
                 return true;
             }
@@ -67,10 +67,8 @@ class LoginAction
     }
 
     public function logout() {
-        if (isset($_GET['token']) and $this->isLoggedIn()) {
-            if ($_GET['token'] == $_COOKIE['token']) {
+        if ($this->loginHelper->checkCSRFtoken($_GET['token']) and $this->isLoggedIn()) {
                 $this->studentCookies->deleteCookies();
-            }
         }
 
         $this->loginHelper->redirect($_GET['go']);

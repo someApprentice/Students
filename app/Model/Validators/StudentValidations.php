@@ -30,7 +30,7 @@ class StudentValidations extends Validations
 
 		'email' => [
 			'validator' => 'isEmailInvalid',
-			'parameters' => ['getEmail']
+			'parameters' => ['getEmail', 'getId']
 		],
 
 		'satscores' => [
