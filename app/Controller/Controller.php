@@ -1,0 +1,14 @@
+<?php
+namespace App\Controller;
+
+class Controller
+{
+	public function getQuery($query)
+	{
+		if (isset($_GET[$query]) and is_scalar($_GET[$query])) {
+			return $_GET[$query];
+		} else {
+			throw new Exception("Invalid query");
+		}
+	}
+}

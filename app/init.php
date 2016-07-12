@@ -12,13 +12,14 @@ use App\Model\Cookies\StudentCookies;
 use App\Controller\RegisterAction;
 use App\Controller\LoginAction;
 use App\Controller\SearchAction;
+use App\View\Viewer;
 
 use Pimple\Container as Pimple;
 
 $container = new Pimple();
 
 $container['PDO'] = function () {
-    $config = parse_ini_file('config.ini');
+    $config = parse_ini_file(__DIR__ . '/config.ini');
 
     $pdo = new \PDO(
         "mysql:host={$config['host']}; dbname={$config['name']}; charset=utf8",
@@ -58,22 +59,22 @@ $container['LoginStudentFormValidations'] = function ($c) {
     return new LoginStudentFormValidations();
 };
 
-$container['StudentCookies'] = function ($c) {
-	return new StudentCookies();
+$container['LoginHelper'] = function ($c) {
+    return new LoginHelper($c['StudentGateway']);
 };
 
-$container['LoginHelper'] = function () {
-    return new LoginHelper();
+$container['Viewer'] = function ($c) {
+    return new Viewer();
 };
 
 $container['LoginAction'] = function ($c) {
-    return new LoginAction($c['StudentGateway'], $c['LoginStudentFormValidations'], $c['LoginHelper'], $c['StudentCookies']);
+    return new LoginAction($c['StudentGateway'], $c['LoginStudentFormValidations'], $c['LoginHelper'], $c['Viewer']);
 };
 
 $container['RegisterAction'] = function ($c) {
-    return new RegisterAction($c['StudentGateway'], $c['RegisterStudentFormValidations'], $c['LoginAction'], $c['StudentCookies']);
+    return new RegisterAction($c['StudentGateway'], $c['RegisterStudentFormValidations'], $c['LoginAction'], $c['LoginHelper'], $c['Viewer']);
 };
 
 $container['SearchAction'] = function ($c) {
-    return new SearchAction($c['StudentGateway']);
+    return new SearchAction($c['StudentGateway'], $c['Viewer']);
 };

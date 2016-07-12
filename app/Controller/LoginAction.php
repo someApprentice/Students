@@ -4,42 +4,30 @@ namespace App\Controller;
 use App\Model\Gateway\StudentGateway;
 use App\Model\Validators\LoginStudentFormValidations;
 use App\Model\Helper\LoginHelper;
-use App\Model\Entity\LoginStudentForm;
+use App\Model\Entity\Forms\LoginStudentForm;
 use App\Model\Errors\ErrorList;
 use App\Model\Entity\Student;
-use App\Model\Cookies\StudentCookies;
+use App\View\Viewer;
 
-class LoginAction
+class LoginAction extends Controller
 {
     protected $studentGateway;
     protected $validations;
     protected $loginHelper;
-    protected $studentCookies;
+    protected $viewer;
 
-    public function __construct(StudentGateway $studentGateway, LoginStudentFormValidations $validations, LoginHelper $loginHelper, StudentCookies $studentCookies)
+    public function __construct(StudentGateway $studentGateway, LoginStudentFormValidations $validations, LoginHelper $loginHelper, Viewer $viewer)
     {
         $this->validations = $validations;
         $this->studentGateway = $studentGateway;
         $this->loginHelper = $loginHelper;
-        $this->studentCookies = $studentCookies;
-    }
-
-    public function isLoggedIn()
-    { 
-        if (isset($_COOKIE['id'])) {
-            $student = $this->studentGateway->getStudentByСolumn('id', $_COOKIE['id']);
-
-            if ($this->loginHelper->validCSRFtoken($student->getToken())) {
-
-                return true;
-            }
-        }
-
-        return false;
+        $this->viewer = $viewer;
     }
 
     public function login()
     {
+        $token = $this->loginHelper->createToken();
+
         $loginStudentForm = new LoginStudentForm();
 
         $errors = new ErrorList();
@@ -50,28 +38,32 @@ class LoginAction
             $errors = $this->validations->validLoginStudentForm($loginStudentForm);
 
             if (!$errors->hasErrors()) {
-                $student = $this->studentGateway->getStudentByСolumn('email', $loginStudentForm->getEmail());
+                if ($this->loginHelper->validToken($token)) {
+                    $student = $this->studentGateway->getStudentByСolumn('email', $loginStudentForm->getEmail());
 
-                if ($student and $this->loginHelper->isPasswordValid($student, $loginStudentForm->getPassword())) {
-                    $this->studentCookies->createCookies($student);
+                    if ($student and $this->loginHelper->isPasswordValid($student, $loginStudentForm->getPassword())) {
+                        $this->loginHelper->createCookies($student);
 
-                    $this->loginHelper->redirect($_GET['go']);
+                        $this->loginHelper->redirect($this->getQuery('go'));
 
-                    exit();
+                        exit();
+                    } else {
+                        $errors->setError('login', "Incorrect username or password");
+                    }
                 } else {
-                    $errors->setError('login', "Incorrect username or password");
+                    throw new Exception("Invalid token");
                 }
             }
         }
 
-        include __DIR__ . '/../../templates/login.phtml';
+        $this->viewer->render('templates/login.phtml', compact('loginStudentForm', 'errors', 'token'));
     }
 
     public function logout() {
-        if ($this->loginHelper->validCSRFtoken($_GET['token']) and $this->isLoggedIn()) {
-                $this->studentCookies->deleteCookies();
+        if ($this->loginHelper->validToken($_GET['token']) and $this->loginHelper->isLoggedIn()) {
+                $this->loginHelper->deleteCookies();
         }
 
-        $this->loginHelper->redirect($_GET['go']);
+        $this->loginHelper->redirect($this->getQuery('go'));
     }
 }

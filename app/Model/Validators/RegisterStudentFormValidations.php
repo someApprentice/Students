@@ -4,7 +4,7 @@ namespace App\Model\Validators;
 use App\Model\Validators\Validations;
 use App\Model\Gateway\StudentGateway;
 use App\Model\Validators\StudentValidations;
-use App\Model\Entity\RegisterStudentForm;
+use App\Model\Entity\Forms\RegisterStudentForm;
 use App\Model\Errors\ErrorList;
 
 class RegisterStudentFormValidations extends Validations
@@ -52,4 +52,30 @@ class RegisterStudentFormValidations extends Validations
 		return $errors;
 
 	}
+
+    public function isPasswordInvalid($password, $editMode = false)
+    {
+        $error = "";
+
+        if ($editMode and $password = "") {
+            return $error;
+        }
+
+        if (!preg_match('/^(.){6,20}$/', $password, $matches)) {
+            $error = $this->validLenght($password, 6, 20);
+        }
+
+        return $error;
+    }
+
+    public function isPasswordsMatch($password, $retrypassword)
+    {
+        $error = "";
+
+        if ($password != $retrypassword) {
+            $error = "Passwords do not match";
+        }
+
+        return $error;
+    }
 }

@@ -2,37 +2,42 @@
 namespace App\Controller;
 
 use App\Model\Gateway\StudentGateway;
-use App\Model\Entity\RegisterStudentForm;
+use App\Model\Entity\Forms\RegisterStudentForm;
 use App\Model\Validators\RegisterStudentFormValidations;
 use App\Model\Errors\ErrorList;
 use App\Model\Entity\Student;
 use App\Model\Helper\Helper;
 use App\Controller\LoginAction;
-use App\Model\Cookies\StudentCookies;
+use App\Model\Helper\LoginHelper;
+use App\View\Viewer;
 
-class RegisterAction
+class RegisterAction extends Controller
 {
     protected $studentGateway;
     protected $validations;
     protected $loginAction;
-    protected $studentCookies;
+    protected $loginHelper;
+    protected $viewer;
 
-    public function __construct(StudentGateway $studentGateway, RegisterStudentFormValidations $validations, LoginAction $loginAction, StudentCookies $studentCookies)
+    public function __construct(StudentGateway $studentGateway, RegisterStudentFormValidations $validations, LoginAction $loginAction, LoginHelper $loginHelper, Viewer $viewer)
     {
         $this->validations = $validations;
         $this->studentGateway = $studentGateway;
         $this->loginAction = $loginAction;
-        $this->studentCookies = $studentCookies;
+        $this->loginHelper = $loginHelper;
+        $this->viewer = $viewer;
     }
 
     public function register()
     {
+        $token = $this->loginHelper->createToken();
+
+        $logged = $this->loginHelper->isLoggedIn();
 
         $registerStudentForm = new RegisterStudentForm();
 
-        if (Helper::validCSRFtoken($_GET['token']) and $this->loginAction->isLoggedIn()) {
-            $student = $this->studentGateway->getStudentByСolumn('id', $_COOKIE['id']);
-            $registerStudentForm->setStudent($student);
+        if ($logged) {            
+            $registerStudentForm->setStudent($logged);
         }
 
         $errors = new ErrorList;
@@ -40,37 +45,31 @@ class RegisterAction
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $registerStudentForm->fillDataFromArray($_POST);
 
-            if (Helper::validCSRFtoken($_GET['token']) and $this->loginAction->isLoggedIn()) {
-                $errors = $this->validations->validRegisterStudentForm($registerStudentForm, true); // true - $editMode
-            } else {
-                $errors = $this->validations->validRegisterStudentForm($registerStudentForm);
-            }      
+            $errors = $this->validations->validRegisterStudentForm($registerStudentForm, $logged); // $logged - $editMode
 
             if (!$errors->hasErrors()) {
-                if (Helper::validCSRFtoken($_GET['token']) and $this->loginAction->isLoggedIn()) {
-                    if ($registerStudentForm->getPassword() != "") {
-                        $registerStudentForm->setStudentPassword();
-
+                if ($this->loginHelper->validToken($registerStudentForm->getToken())) {
+                    if ($logged) {
                         $this->studentGateway->updateStudent($registerStudentForm->getStudent());
 
-                        $this->studentCookies->createCookies($registerStudentForm->getStudent());
+                        if ($registerStudentForm->getPassword != "") {
+                            $this->loginHelper->createCookies($registerStudentForm->getStudent());
+                        }
+                        
+                        Helper::redirect('/public/index.php?notify=Success');
                     } else {
-                        $this->studentGateway->updateStudent($registerStudentForm->getStudent());
-                    }
-                    
-                    Helper::redirect('/public/index.php?notify=Success');
+                        $this->studentGateway->addStudent($registerStudentForm->getStudent());
+
+                        $this->loginAction->login();
+
+                        Helper::redirect($this->getQuery('go'));
+                    } 
                 } else {
-                    $registerStudentForm->setStudentPassword();
-
-                    $this->studentGateway->addStudent($registerStudentForm->getStudent());
-
-                    $this->loginAction->login();
-
-                    Helper::redirect($_GET['go']);
-                }  
+                    throw new Exception("Invalid token");
+                }
             }
         }
 
-        include __DIR__ . '/../../templates/registration.phtml';
+        $this->viewer->render('templates/registration.phtml', compact('registerStudentForm', 'errors', 'token', 'logged'));
     }
 }

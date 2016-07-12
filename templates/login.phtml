@@ -7,6 +7,8 @@
 </head>
 <body>
 	<form method="post" name="login" action="/public/login.php?go=/public/index.php">
+		<input type="hidden" name="token" value="<?= htmlspecialchars($token, ENT_QUOTES) ?>">
+	
 		<label>
 			Input your email <input type="email" name="email" pattern=".+@.+\..+" required value="<?= (null !== $loginStudentForm->getEmail()) ? htmlspecialchars($loginStudentForm->getEmail(), ENT_QUOTES) : '' ?>">
 			<?= (null !== $errors->getError('login')) ? $errors->getError('login') : '' ?>

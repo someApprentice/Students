@@ -3,7 +3,7 @@ namespace App\Model\Gateway;
 
 use App\Model\Entity\Student;
 
-class StudentGateway extends TableDataGateWay
+class StudentGateway extends TableDataGateway
 {
     protected $pdo;
 
@@ -63,8 +63,7 @@ class StudentGateway extends TableDataGateWay
 	    		yearofbirth,
 	    		location,
 	    		hash,
-	    		salt,
-	    		token
+	    		salt
  	    	) VALUES (
 	    		NULL,
 	    		:name,
@@ -76,8 +75,7 @@ class StudentGateway extends TableDataGateWay
 	    		:yearofbirth,
 	    		:location,
 	    		:hash,
-	    		:salt,
-	    		:token
+	    		:salt
 	    	)"
         );
 
@@ -91,8 +89,7 @@ class StudentGateway extends TableDataGateWay
             ':yearofbirth' => $student->getYearOfBirth(),
             ':location' => $student->getLocation(),
             ':hash' => $student->getHash(),
-            ':salt' => $student->getSalt(),
-            ':token' => $student->getToken()
+            ':salt' => $student->getSalt()
         ));
     }
 
@@ -110,8 +107,7 @@ class StudentGateway extends TableDataGateWay
             yearofbirth = :yearofbirth,
             location = :location,
             hash = :hash,
-            salt = :salt,
-            token = :token
+            salt = :salt
         WHERE id = :id");
         
         $query->execute(array(
@@ -125,8 +121,7 @@ class StudentGateway extends TableDataGateWay
             ':yearofbirth' => $student->getYearOfBirth(),
             ':location' => $student->getLocation(),
             ':hash' => $student->getHash(),
-            ':salt' => $student->getSalt(),
-            ':token' => $student->getToken()
+            ':salt' => $student->getSalt()
         ));
     }
 

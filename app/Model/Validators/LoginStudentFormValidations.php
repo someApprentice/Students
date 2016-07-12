@@ -1,7 +1,7 @@
 <?php
 namespace App\Model\Validators;
 
-use App\Model\Entity\LoginStudentForm;
+use App\Model\Entity\Forms\LoginStudentForm;
 use App\Model\Errors\ErrorList;
 
 class LoginStudentFormValidations

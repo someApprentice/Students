@@ -10,6 +10,8 @@ class Search
 	{
 		if (is_scalar($query)) {
 			$this->query = trim($query);	
+		} else {
+			throw new Exception("Invalid query");
 		}
 	}
 

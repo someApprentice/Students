@@ -3,7 +3,7 @@ namespace App\Model\Entity;
 
 use App\Model\Helper\LoginHelper as Authorizer;
 
-class Student implements Entity
+class Student
 {
     protected $id = null;
     protected $name = '';
@@ -17,7 +17,6 @@ class Student implements Entity
 
     protected $hash;
     protected $salt;
-    protected $token;
 
     function fillDataFromArray(array $data)
 	{
@@ -101,7 +100,6 @@ class Student implements Entity
     {
         $this->salt = Authorizer::generateSalt();
         $this->hash = Authorizer::hashPassword($password, $this->salt);
-        $this->token = Authorizer::generateToken();
     }
 
     public function setHash($hash)
@@ -112,11 +110,6 @@ class Student implements Entity
     public function setSalt($salt)
     {
         $this->salt = $salt;
-    }
-
-    public function setToken($token)
-    {
-        $this->token = $token;
     }
 
     public function getProperty($property) {
@@ -176,10 +169,5 @@ class Student implements Entity
     public function getSalt()
     {
         return $this->salt;
-    }
-
-    public function getToken()
-    {
-        return $this->token;
     }
 }
