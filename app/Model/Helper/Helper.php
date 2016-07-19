@@ -3,13 +3,13 @@ namespace App\Model\Helper;
 
 class Helper
 {
-    public static function redirect($location = "/public/index.php")
-    {
-	    if (!preg_match('!^/([^/]|\\Z)!', $location, $matches)) {
-	        $location = "/public/index.php";
-	    }
-
-	    header("Location: " . $location);
+	public function getCookie($cookie)
+	{
+		if (isset($_COOKIE[$cookie]) and $_COOKIE[$cookie] != '') {
+			return $_COOKIE[$cookie];
+		} else {
+			throw new \Exception("Invalid cookie");
+		}
 	}
 
     public static function generateToken()

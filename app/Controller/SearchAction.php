@@ -4,7 +4,7 @@ namespace App\Controller;
 use App\Model\Entity\Search;
 use App\Model\Gateway\StudentGateway;
 
-class SearchAction extneds Controller
+class SearchAction extends Controller
 {
 	protected $studentGateway;
 
@@ -14,14 +14,10 @@ class SearchAction extneds Controller
 
 	public function search()
 	{
-		$search = new Search();
+		if ($_GET) {
+			$query = $this->getQuery('query');
 
-		if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-			$search->setQuery($this->getQuery('query'));
-
-			$results = $this->studentGateway->searchStudents($search->getQuery());
-
-			$search->setResults($results);			
+			$results = $this->studentGateway->searchStudents($query);		
 		}
 
 		include __DIR__ . '/../../templates/search.phtml';

@@ -8,14 +8,14 @@
 <body>
 	<form method="get" name="search" action="/public/search.php">
 		<label>
-			Search <input type="text" name="query" value="<?= (null !== $search->getQuery()) ? htmlspecialchars($search->getQuery(), ENT_QUOTES) : '' ?>">
+			Search <input type="text" name="query" value="<?= (null !== $query) ? htmlspecialchars($query, ENT_QUOTES) : '' ?>">
 		</label>
 
 		<input id="button" type="submit" value="input">
 	</form>
 
-	<?php if ($search->getResults()) : ?>
-		<?php if ($search->getResults()->count() != 0) : ?>
+	<?php if ($results) : ?>
+		<?php if ($results->count() != 0) : ?>
 			<table>
 				<tr>
 					<th>Name</th>
@@ -28,7 +28,7 @@
 					<th>Location</th>
 				</tr>
 
-				<?php foreach ($search->getResults() as $student) :?>
+				<?php foreach ($results as $student) :?>
 					<tr>
 						<td><?= $student->getName() ?></td>
 						<td><?= $student->getSurname() ?></td>
@@ -40,7 +40,6 @@
 						<td><?= $student->getLocation() ?></td>
 					</tr>
 				<?php endforeach; ?>
-
 			</table>
 		<?php else: ?>
 			No results.

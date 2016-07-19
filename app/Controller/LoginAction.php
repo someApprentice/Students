@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Model\Gateway\StudentGateway;
 use App\Model\Validators\LoginStudentFormValidations;
+use App\Model\Helper\Helper;
 use App\Model\Helper\LoginHelper;
 use App\Model\Entity\Forms\LoginStudentForm;
 use App\Model\Errors\ErrorList;
@@ -13,20 +14,22 @@ class LoginAction extends Controller
 {
     protected $studentGateway;
     protected $validations;
+    protected $helper;
     protected $loginHelper;
     protected $viewer;
 
-    public function __construct(StudentGateway $studentGateway, LoginStudentFormValidations $validations, LoginHelper $loginHelper, Viewer $viewer)
+    public function __construct(StudentGateway $studentGateway, LoginStudentFormValidations $validations, Helper $helper, LoginHelper $loginHelper, Viewer $viewer)
     {
         $this->validations = $validations;
         $this->studentGateway = $studentGateway;
+        $this->helper = $helper;
         $this->loginHelper = $loginHelper;
         $this->viewer = $viewer;
     }
 
     public function login()
     {
-        $token = $this->loginHelper->createToken();
+        $token = $this->helper->createToken();
 
         $loginStudentForm = new LoginStudentForm();
 
@@ -38,13 +41,13 @@ class LoginAction extends Controller
             $errors = $this->validations->validLoginStudentForm($loginStudentForm);
 
             if (!$errors->hasErrors()) {
-                if ($this->loginHelper->validToken($token)) {
+                if ($this->helper->validToken($token)) {
                     $student = $this->studentGateway->getStudentByСolumn('email', $loginStudentForm->getEmail());
 
                     if ($student and $this->loginHelper->isPasswordValid($student, $loginStudentForm->getPassword())) {
                         $this->loginHelper->createCookies($student);
 
-                        $this->loginHelper->redirect($this->getQuery('go'));
+                        $this->redirect($this->getQuery('go'));
 
                         exit();
                     } else {
@@ -64,6 +67,6 @@ class LoginAction extends Controller
                 $this->loginHelper->deleteCookies();
         }
 
-        $this->loginHelper->redirect($this->getQuery('go'));
+        $this->redirect($this->getQuery('go'));
     }
 }

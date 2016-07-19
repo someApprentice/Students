@@ -16,21 +16,23 @@ class RegisterAction extends Controller
     protected $studentGateway;
     protected $validations;
     protected $loginAction;
+    protected $helper;
     protected $loginHelper;
     protected $viewer;
 
-    public function __construct(StudentGateway $studentGateway, RegisterStudentFormValidations $validations, LoginAction $loginAction, LoginHelper $loginHelper, Viewer $viewer)
+    public function __construct(StudentGateway $studentGateway, RegisterStudentFormValidations $validations, LoginAction $loginAction, Helper $helper, LoginHelper $loginHelper, Viewer $viewer)
     {
         $this->validations = $validations;
         $this->studentGateway = $studentGateway;
         $this->loginAction = $loginAction;
+        $this->helper = $helper;
         $this->loginHelper = $loginHelper;
         $this->viewer = $viewer;
     }
 
     public function register()
     {
-        $token = $this->loginHelper->createToken();
+        $token = $this->helper->createToken();
 
         $logged = $this->loginHelper->isLoggedIn();
 
@@ -48,7 +50,7 @@ class RegisterAction extends Controller
             $errors = $this->validations->validRegisterStudentForm($registerStudentForm, $logged); // $logged - $editMode
 
             if (!$errors->hasErrors()) {
-                if ($this->loginHelper->validToken($registerStudentForm->getToken())) {
+                if ($this->helper->validToken($registerStudentForm->getToken())) {
                     if ($logged) {
                         $this->studentGateway->updateStudent($registerStudentForm->getStudent());
 
@@ -56,16 +58,16 @@ class RegisterAction extends Controller
                             $this->loginHelper->createCookies($registerStudentForm->getStudent());
                         }
                         
-                        Helper::redirect('/public/index.php?notify=Success');
+                        $this->redirect('/public/index.php?notify=Success');
                     } else {
                         $this->studentGateway->addStudent($registerStudentForm->getStudent());
 
                         $this->loginAction->login();
 
-                        Helper::redirect($this->getQuery('go'));
+                        $this->redirect($this->getQuery('go'));
                     } 
                 } else {
-                    throw new Exception("Invalid token");
+                    throw new \Exception("Invalid token");
                 }
             }
         }

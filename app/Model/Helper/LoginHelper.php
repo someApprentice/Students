@@ -3,8 +3,9 @@ namespace App\Model\Helper;
 
 use App\Model\Gateway\StudentGateway;
 use App\Model\Entity\Student;
+use App\Model\Helper\Helper;
 
-class LoginHelper extends Helper
+class LoginHelper
 {
     protected $studentGateway;
 
@@ -33,7 +34,7 @@ class LoginHelper extends Helper
 
         setcookie('id', $student->getId(), time() + $expires, '/', null, null, true);
         setcookie('hash', $student->getHash(), time() + $expires, '/', null, null, true);
-        setcookie('token', $this->generateToken(), time() + $expires, '/', null, null, true);
+        setcookie('token', Helper::generateToken(), time() + $expires, '/', null, null, true);
     }
 
     public function deleteCookies()
