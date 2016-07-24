@@ -2,14 +2,14 @@
 	<?php if ($pager->getRecordsOnCorrentPage()->count() != 0) : ?>
 		<table>
 			<tr>
-				<th><a href="?<?= $pager->getSortLink('name')['link'] ?>">Name <?= $pager->getSortLink('name')['linkNamePostfix'] ?></a></th>
-				<th><a href="?<?= $pager->getSortLink('surname')['link'] ?>">Surname</a> <?= $pager->getSortLink('surname')['linkNamePostfix'] ?></th>
-				<th><a href="?<?= $pager->getSortLink('gender')['link'] ?>">Gender <?= $pager->getSortLink('gender')['linkNamePostfix'] ?></a></th>
-				<th><a href="?<?= $pager->getSortLink('grupNumber')['link'] ?>">Grup Number <?= $pager->getSortLink('grupNumber')['linkNamePostfix'] ?></a></th>
-				<th><a href="?<?= $pager->getSortLink('email')['link'] ?>">Email <?= $pager->getSortLink('email')['linkNamePostfix'] ?></a></th>
-				<th><a href="?<?= $pager->getSortLink('satScores')['link'] ?>">SAT Scores <?= $pager->getSortLink('satScores')['linkNamePostfix'] ?></a></th>
-				<th><a href="?<?= $pager->getSortLink('yearOfBirth')['link'] ?>">Year Of Birth <?= $pager->getSortLink('yearOfBirth')['linkNamePostfix'] ?></a></th>
-				<th><a href="?<?= $pager->getSortLink('location')['link'] ?>">Location <?= $pager->getSortLink('location')['linkNamePostfix'] ?></a></th>
+				<th><a href="?<?= $pager->getSortLinkBy('name')['link'] ?>">Name <?= $pager->getSortLinkBy('name')['linkNamePostfix'] ?></a></th>
+				<th><a href="?<?= $pager->getSortLinkBy('surname')['link'] ?>">Surname</a> <?= $pager->getSortLinkBy('surname')['linkNamePostfix'] ?></th>
+				<th><a href="?<?= $pager->getSortLinkBy('gender')['link'] ?>">Gender <?= $pager->getSortLinkBy('gender')['linkNamePostfix'] ?></a></th>
+				<th><a href="?<?= $pager->getSortLinkBy('grupNumber')['link'] ?>">Grup Number <?= $pager->getSortLinkBy('grupNumber')['linkNamePostfix'] ?></a></th>
+				<th><a href="?<?= $pager->getSortLinkBy('email')['link'] ?>">Email <?= $pager->getSortLinkBy('email')['linkNamePostfix'] ?></a></th>
+				<th><a href="?<?= $pager->getSortLinkBy('satScores')['link'] ?>">SAT Scores <?= $pager->getSortLinkBy('satScores')['linkNamePostfix'] ?></a></th>
+				<th><a href="?<?= $pager->getSortLinkBy('yearOfBirth')['link'] ?>">Year Of Birth <?= $pager->getSortLinkBy('yearOfBirth')['linkNamePostfix'] ?></a></th>
+				<th><a href="?<?= $pager->getSortLinkBy('location')['link'] ?>">Location <?= $pager->getSortLinkBy('location')['linkNamePostfix'] ?></a></th>
 			</tr>
 
 			<?php foreach ($pager->getRecordsOnCorrentPage() as $student) :?>
@@ -54,5 +54,3 @@
 		<?php endif; ?>
 	</div>
 <?php endif; ?>
-<?php
-$link = $pager->getSortLink('name');

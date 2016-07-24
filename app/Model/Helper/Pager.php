@@ -104,7 +104,7 @@ class Pager
 		$this->records = $sortedRecords;
 	}
 
-	public function getSortLink($sort)
+	public function getSortLinkBy($sort)
 	{
 		$queries = $this->queries;
 
