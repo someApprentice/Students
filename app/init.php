@@ -9,7 +9,7 @@ use App\Model\Validators\LoginStudentFormValidations;
 use App\Model\Helper\Helper;
 use App\Model\Helper\LoginHelper;
 use App\Model\Helper\LoginHelper as Authorizer;
-use App\Model\Cookies\StudentCookies;
+use App\Controller\IndexAction;
 use App\Controller\RegisterAction;
 use App\Controller\LoginAction;
 use App\Controller\SearchAction;
@@ -72,12 +72,16 @@ $container['Viewer'] = function ($c) {
     return new Viewer();
 };
 
+$container['IndexAction'] = function ($c) {
+    return new IndexAction($c['StudentGateway'], $c['Helper'], $c['LoginHelper'], $c['Viewer']);
+};
+
 $container['LoginAction'] = function ($c) {
-    return new LoginAction($c['StudentGateway'], $c['LoginStudentFormValidations'], $c['Helper'],$c['LoginHelper'], $c['Viewer']);
+    return new LoginAction($c['StudentGateway'], $c['LoginStudentFormValidations'], $c['Helper'], $c['LoginHelper'], $c['Viewer']);
 };
 
 $container['RegisterAction'] = function ($c) {
-    return new RegisterAction($c['StudentGateway'], $c['RegisterStudentFormValidations'], $c['Helper'],$c['LoginAction'], $c['LoginHelper'], $c['Viewer']);
+    return new RegisterAction($c['StudentGateway'], $c['RegisterStudentFormValidations'], $c['LoginAction'], $c['Helper'], $c['LoginHelper'], $c['Viewer']);
 };
 
 $container['SearchAction'] = function ($c) {

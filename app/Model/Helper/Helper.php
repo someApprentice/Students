@@ -7,8 +7,6 @@ class Helper
 	{
 		if (isset($_COOKIE[$cookie]) and $_COOKIE[$cookie] != '') {
 			return $_COOKIE[$cookie];
-		} else {
-			throw new \Exception("Invalid cookie");
 		}
 	}
 

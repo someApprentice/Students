@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-    <link rel='stylesheet' type='text/css' href='/css/stylesheets.css'/>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-</head>
-<body>
 	<form method="post" name="login" action="/public/login.php?go=/public/index.php">
 		<input type="hidden" name="token" value="<?= htmlspecialchars($token, ENT_QUOTES) ?>">
 	
@@ -23,5 +15,3 @@
 
 		<input type="submit" name="input" value="input">
 	</form>
-</body>
-</html>

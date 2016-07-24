@@ -1,0 +1,8 @@
+	<?php if ($loggedStudent) : ?>
+
+	<?php if ($notify) : ?>
+		<ins style="color: green;">Edit Success!</ins><br>
+	<?php endif ?>
+
+	Hello, <?= htmlspecialchars($loggedStudent->getName(), ENT_QUOTES) ?> <?= htmlspecialchars($loggedStudent->getSurname(), ENT_QUOTES) ?>. Want to <a href="registration.php">edit</a> or <a href="logout.php?token=<?= $token ?>&go=/public/index.php">logout?</a>
+	<?php endif ?>

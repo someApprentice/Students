@@ -29,6 +29,9 @@ class LoginAction extends Controller
 
     public function login()
     {
+        $this->viewer->render('templates/head.phtml');
+
+
         $token = $this->helper->createToken();
 
         $loginStudentForm = new LoginStudentForm();
@@ -54,12 +57,14 @@ class LoginAction extends Controller
                         $errors->setError('login', "Incorrect username or password");
                     }
                 } else {
-                    throw new Exception("Invalid token");
+                    throw new \Exception("Invalid token");
                 }
             }
         }
 
         $this->viewer->render('templates/login.phtml', compact('loginStudentForm', 'errors', 'token'));
+
+        $this->viewer->render('templates/foot.phtml');
     }
 
     public function logout() {

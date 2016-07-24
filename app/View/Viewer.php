@@ -2,7 +2,7 @@
 namespace App\View;
 
 class Viewer {
-	public function render($path, array $varibles)
+	public function render($path, array $varibles = array())
 	{
 		extract($varibles);
 
