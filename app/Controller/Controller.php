@@ -21,15 +21,34 @@ class Controller
 
 	public function getSortQuery()
 	{
-		if (isset($_GET['sort']) and is_scalar($_GET['sort'])) {
-			$queries['sort'] = $_GET['sort'];
+        $orderAllowed = [
+            'id',
+            'name',
+            'surname',
+            'grupNumber',
+            'email',
+            'satScores',
+            'yearOfBirth',
+            'location'
+        ];
+
+		if (isset($_GET['sort']) and is_scalar($_GET['sort']) and in_array($_GET['sort'], $orderAllowed)) {
+            $queries['sort'] = $_GET['sort'];   
 		} else {
 			$queries['sort'] = 'satScores';
 		}
 
-		if (isset($_GET['by']) and is_scalar($_GET['by'])) {
-			$queries['by'] = $_GET['by'];
-		} else {
+
+        $byAllowed = [
+            'ASC',
+            'asc',
+            'DESC',
+            'desc'
+        ];
+
+        if (isset($_GET['by']) and is_scalar($_GET['by']) and in_array($_GET['by'], $byAllowed)) {
+            $queries['by'] = $_GET['by'];
+        } else {
 			$queries['by'] = 'asc';
 		}
 

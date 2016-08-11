@@ -17,7 +17,8 @@ class Helper
         return $token;
     }
 
-	public function createToken() {
+	public function createToken() 
+	{
 		if (isset($_COOKIE['token'])) {
 			$token = $_COOKIE['token'];
 		} else {

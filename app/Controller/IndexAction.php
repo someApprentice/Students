@@ -26,7 +26,6 @@ class IndexAction extends Controller
 	{
 		$this->viewer->render('templates/head.phtml');
 
-
 		$loggedStudent = $this->loginHelper->isLoggedIn();
 
 		$notify = $this->getQuery('Success');
@@ -36,15 +35,22 @@ class IndexAction extends Controller
 		$this->viewer->render('templates/index.phtml', compact('loggedStudent', 'notify', 'token'));
 
 
-		$records = $this->studentGateway->getAllStudents();
-
 		$correntPage = $this->getPageQuery();
-
 		extract($this->getSortQuery());
 
-		$pager = new Pager($records, $correntPage, compact('sort', 'by'));
+		$pager = new Pager(compact('correntPage', 'sort', 'by'));
 
-		$this->viewer->render('templates\list.phtml', compact('pager'));
+		$limit = $pager->getLimit();
+		$offset = $pager->getOffset();
+
+		$records = $this->studentGateway->getAllStudents($limit, $offset, $sort, $by);
+
+		$recordsCount = $this->studentGateway->getStudentsCount();
+
+		$pager->setRecords($records);
+		$pager->setRecordsCount($recordsCount);
+
+		$this->viewer->render('templates/list.phtml', compact('pager'));
 
 
 		$this->viewer->render('templates/foot.phtml');

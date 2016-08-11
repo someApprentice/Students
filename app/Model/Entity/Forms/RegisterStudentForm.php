@@ -2,6 +2,7 @@
 namespace App\Model\Entity\Forms;
 
 use App\Model\Entity\Student;
+use App\Model\Helper\LoginHelper;
 
 class RegisterStudentForm
 {
@@ -44,7 +45,7 @@ class RegisterStudentForm
 
 	public function setStudentPassword()
 	{
-		$this->student->setPassword($this->password);
+		LoginHelper::setPassword($this->student, $this->password);
 	}
 
     public function setToken($token)

@@ -1,5 +1,5 @@
-<?php if ($pager->getRecordsOnCorrentPage()) : ?>
-	<?php if ($pager->getRecordsOnCorrentPage()->count() != 0) : ?>
+<?php if ($pager->getRecords()) : ?>
+	<?php if ($pager->getRecords()->count() != 0) : ?>
 		<table>
 			<tr>
 				<th><a href="?<?= $pager->getSortLinkBy('name')['link'] ?>">Name <?= $pager->getSortLinkBy('name')['linkNamePostfix'] ?></a></th>
@@ -12,7 +12,7 @@
 				<th><a href="?<?= $pager->getSortLinkBy('location')['link'] ?>">Location <?= $pager->getSortLinkBy('location')['linkNamePostfix'] ?></a></th>
 			</tr>
 
-			<?php foreach ($pager->getRecordsOnCorrentPage() as $student) :?>
+			<?php foreach ($pager->getRecords() as $student) :?>
 				<tr>
 					<td><?= $student->getName() ?></td>
 					<td><?= $student->getSurname() ?></td>
@@ -30,7 +30,6 @@
 		No records.
 	<?php endif; ?>
 <?php endif; ?>
-
 
 <?php if ($pager->getTotalPages() > 1) : ?>
 	<div class="pages">

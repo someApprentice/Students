@@ -3,114 +3,93 @@ namespace App\Model\Helper;
 
 class Pager
 {
-	protected $records;
-	protected $correntPage;
 	protected $queries;
+	protected $records;
+
+	protected $recordsCount;
 	protected $recordsPerPage;
 
-	public function __construct($records, $correntPage, array $queries = array(), $recordsPerPage = 10)
+	public function __construct($queries, $recordsPerPage = 10)
 	{
-		$this->records = $records;
-		$this->correntPage = $correntPage;
 		$this->queries = $queries;
 		$this->recordsPerPage = $recordsPerPage;
+	}
 
-		$this->sort();
+	public function setRecords(\SplObjectStorage $records)
+	{
+		$this->records = $records;
+	}
+
+	public function setRecordsCount($recordsCount)
+	{
+		$this->recordsCount = $recordsCount;
 	}
 
 	public function getTotalPages()
 	{
-		$recordsCount = $this->records->count();
-
-		$totalPages = ceil($recordsCount / $this->recordsPerPage);
+		$totalPages = ceil($this->recordsCount / $this->recordsPerPage);
 
 		return $totalPages;
 	}
 
 	public function getPreviosPage()
 	{
-		$previosPage = $this->correntPage - 1;
+		$previosPage = $this->queries['correntPage'] - 1;
 
 		return $previosPage;
 	}
 
 	public function getCorrentPage()
 	{
-		return $this->correntPage;
+		return $this->queries['correntPage'];
 	}
 
 	public function getNextPage()
 	{
-		$nextPage = $this->correntPage + 1;
+		$nextPage = $this->queries['correntPage'] + 1;
 		
 		return $nextPage;
 	}
 
 	public function getLinkForPage($n)
 	{
-		$this->queries['page'] = $n;
+		if (isset($this->queries['query'])) {
+			$queries['query'] = $this->queries['query'];
+		}
 
-		return http_build_query($this->queries);
+		$queries['page'] = $n;
+		$queries['sort'] = $this->queries['sort'];
+		$queries['by'] = $this->queries['by'];
+
+		return http_build_query($queries);
 	}
 
-	public function getRecordsOnCorrentPage()
-	{
-		$recordsOnCorrentPage = new \SplObjectStorage();
-		
-		$from = ($this->correntPage - 1) * $this->recordsPerPage;
-		$to = $this->correntPage * $this->recordsPerPage - 1;
+	public function getLimit() {
+		$limit = $this->recordsPerPage;
 
-		foreach ($this->records as $student) {
-			if ($this->records->key() >= $from and $this->records->key() <= $to) {
-				$recordsOnCorrentPage->attach($student);
-			} 	
-		}
-
-		return $recordsOnCorrentPage;
+		return $limit;
 	}
 
-	public function sort()
-	{
-		$sort = $this->queries['sort'];
+	public function getOffset() {
+		$offset = ($this->queries['correntPage'] - 1) * $this->recordsPerPage;
 
-		foreach ($this->records as $student) {
-			$array[] = $student;
-		}
+		return $offset;
+	}
 
-		if ($this->queries['by'] == 'asc') {
-			usort($array, function($a, $b) use ($sort) {
-			    if ($a->getProperty($sort) == $b->getProperty($sort)) {
-			        return 0;
-			    }
-
-			    return ($a->getProperty($sort) > $b->getProperty($sort)) ? -1 : 1;
-			});
-		} elseif ($this->queries['by'] == 'desc') {
-			usort($array, function($a, $b) use ($sort) {
-			    if ($a->getProperty($sort) == $b->getProperty($sort)) {
-			        return 0;
-			    }
-
-			    return ($a->getProperty($sort) < $b->getProperty($sort)) ? -1 : 1;
-			});
-		}
-
-		$sortedRecords = new \SplObjectStorage();
-
-		foreach ($array as $student) {
-			$sortedRecords->attach($student);
-		}
-
-		$this->records = $sortedRecords;
+	public function getRecords() {
+		return $this->records;
 	}
 
 	public function getSortLinkBy($sort)
 	{
-		$queries = $this->queries;
+		if (isset($this->queries['query'])) {
+			$queries['query'] = $this->queries['query'];
+		}
 
+		$queries['page'] = $this->queries['correntPage'];
 		$queries['sort'] = $sort;
-		$queries['page'] = $this->correntPage;
-		
+		$queries['by'] = $this->queries['by']; 
+
 		if ($this->queries['sort'] != $sort) {
 			$queries['by'] = 'asc';
 			$postfix = '';

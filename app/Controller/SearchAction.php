@@ -24,16 +24,23 @@ class SearchAction extends Controller
 		if ($_GET) {
 			$query = $this->getQuery('query');
 
-			$results = $this->studentGateway->searchStudents($query);	
-
-			$this->viewer->render('templates\search.phtml', compact('query'));			
+			$this->viewer->render('templates\search.phtml', compact('query'));
 
 			$correntPage = $this->getPageQuery();
-
 			extract($this->getSortQuery());
-			
-			$pager = new Pager($results, $correntPage, compact('query', 'sort', 'by'));
-			
+
+			$pager = new Pager(compact('query', 'correntPage', 'sort', 'by'));
+
+			$limit = $pager->getLimit();
+			$offset = $pager->getOffset();
+
+			$records = $this->studentGateway->searchStudents($query, $limit, $offset, $sort, $by);
+
+			$recordsCount = $this->studentGateway->getStudentsCount($query);
+
+			$pager->setRecords($records);
+			$pager->setRecordsCount($recordsCount);
+
 			$this->viewer->render('templates\list.phtml', compact('pager'));
 		} else {
 			$this->viewer->render('templates\search.phtml', compact('query'));

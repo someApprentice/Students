@@ -18,7 +18,7 @@ class Student
     protected $hash;
     protected $salt;
 
-    function fillDataFromArray(array $data)
+    public function fillDataFromArray(array $data)
 	{
 		$allowed = [
 			'name', 
@@ -38,7 +38,7 @@ class Student
 		}
 	}
 
-    function fillAllData(array $data)
+    public function fillAllData(array $data)
 	{
 		foreach ($data as $property => $value) {
 			if (property_exists($this, $property)) {
