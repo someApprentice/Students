@@ -36,8 +36,11 @@ class IndexAction extends Controller
 
 
 		$correntPage = $this->getPageQuery();
-		extract($this->getSortQuery());
 
+		$sortQueries = $this->getSortQuery();
+        $sort = $sortQueries['sort'];
+        $by = $sortQueries['by'];
+        
 		$pager = new Pager(compact('correntPage', 'sort', 'by'));
 
 		$limit = $pager->getLimit();

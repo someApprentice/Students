@@ -27,7 +27,10 @@ class SearchAction extends Controller
 			$this->viewer->render('templates\search.phtml', compact('query'));
 
 			$correntPage = $this->getPageQuery();
-			extract($this->getSortQuery());
+
+			$sortQueries = $this->getSortQuery();
+	        $sort = $sortQueries['sort'];
+	        $by = $sortQueries['by'];
 
 			$pager = new Pager(compact('query', 'correntPage', 'sort', 'by'));
 
