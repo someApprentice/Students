@@ -24,8 +24,6 @@ class IndexAction extends Controller
 
 	public function run()
 	{
-		$this->viewer->render('templates/head.phtml');
-
 		$loggedStudent = $this->loginHelper->isLoggedIn();
 
 		$notify = $this->getQuery('Success');
@@ -54,8 +52,5 @@ class IndexAction extends Controller
 		$pager->setRecordsCount($recordsCount);
 
 		$this->viewer->render('templates/list.phtml', compact('pager'));
-
-
-		$this->viewer->render('templates/foot.phtml');
 	}
 }

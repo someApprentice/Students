@@ -32,9 +32,6 @@ class RegisterAction extends Controller
 
     public function register()
     {
-        $this->viewer->render('templates/head.phtml');
-
-
         $token = $this->helper->createToken();
 
         $logged = $this->loginHelper->isLoggedIn();
@@ -76,7 +73,5 @@ class RegisterAction extends Controller
         }
 
         $this->viewer->render('templates/registration.phtml', compact('registerStudentForm', 'errors', 'token', 'logged'));
-
-        $this->viewer->render('templates/foot.phtml');
     }
 }

@@ -45,7 +45,7 @@ class StudentGateway extends TableDataGateway
     {
         $pdo = $this->getPdo();
 
-        $allowedColumn = ["name", "surname", "gender", "grupNumber", "email", "satScores", "yearOfBirth", "location"];
+        $allowedColumn = ["id", "name", "surname", "gender", "grupNumber", "email", "satScores", "yearOfBirth", "location"];
         $column = (is_scalar($column) and in_array($column, $allowedColumn)) ? $column : 'satScores';        
 
         $query = $pdo->prepare("SELECT * FROM students WHERE {$column}=:value");

@@ -29,9 +29,6 @@ class LoginAction extends Controller
 
     public function login()
     {
-        $this->viewer->render('templates/head.phtml');
-
-
         $token = $this->helper->createToken();
 
         $loginStudentForm = new LoginStudentForm();
@@ -63,12 +60,10 @@ class LoginAction extends Controller
         }
 
         $this->viewer->render('templates/login.phtml', compact('loginStudentForm', 'errors', 'token'));
-
-        $this->viewer->render('templates/foot.phtml');
     }
 
     public function logout() {
-        if ($this->loginHelper->validToken($_GET['token']) and $this->loginHelper->isLoggedIn()) {
+        if ($this->helper->validToken($_GET['token']) and $this->loginHelper->isLoggedIn()) {
                 $this->loginHelper->deleteCookies();
         }
 

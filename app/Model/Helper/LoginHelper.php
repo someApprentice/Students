@@ -55,7 +55,7 @@ class LoginHelper
     public static function setPassword(Student $student, $password)
     {
         $student->setSalt(LoginHelper::generateSalt());
-        $student->setHash(LoginHelper::hashPassword($password, $hash));
+        $student->setHash(LoginHelper::hashPassword($password, $student->getSalt()));
     }
 
     public static function generateSalt()

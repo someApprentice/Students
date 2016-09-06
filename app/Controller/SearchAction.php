@@ -18,9 +18,6 @@ class SearchAction extends Controller
 
 	public function search()
 	{
-		$this->viewer->render('templates/head.phtml');
-
-
 		if ($_GET) {
 			$query = $this->getQuery('query');
 
@@ -48,8 +45,5 @@ class SearchAction extends Controller
 		} else {
 			$this->viewer->render('templates\search.phtml', compact('query'));
 		}
-
-
-		$this->viewer->render('templates/head.phtml');
 	}
 }
