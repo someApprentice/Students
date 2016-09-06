@@ -7,9 +7,15 @@ class StudentGateway extends TableDataGateway
 {
     protected $pdo;
 
-    public function getAllStudents($limit = 2147483647, $offset = 0, $order = 'id', $by = 'ASC')
+    public function getStudents($order = 'satScores', $by = 'ASC', $limit = 2147483647, $offset = 0)
     {
         $pdo = $this->getPdo();
+
+        $allowedOrder = ["name", "surname", "gender", "grupNumber", "email", "satScores", "yearOfBirth", "location"];
+        $allowedBy = ["ASC", "asc", "DESC", "desc"];
+
+        $order = (is_scalar($order) and in_array($order, $allowedOrder)) ? $order : 'satScores';   
+        $by = (is_scalar($by) and in_array($by, $allowedBy)) ? $by : 'ASC';   
 
         $query = $pdo->prepare("SELECT * FROM students ORDER BY {$order} {$by} LIMIT :limit OFFSET :offset");
         $query->bindValue(':limit', (int) $limit, \PDO::PARAM_INT);
@@ -30,9 +36,17 @@ class StudentGateway extends TableDataGateway
         return $students;
     }
 
+    public function getAllStudnts($order = 'id', $by = 'desc')
+    {
+        return $this->getStudents($order, $by);
+    }
+
     public function getStudentByСolumn($column, $value)
     {
         $pdo = $this->getPdo();
+
+        $allowedColumn = ["name", "surname", "gender", "grupNumber", "email", "satScores", "yearOfBirth", "location"];
+        $column = (is_scalar($column) and in_array($column, $allowedColumn)) ? $column : 'satScores';        
 
         $query = $pdo->prepare("SELECT * FROM students WHERE {$column}=:value");
         $query->bindValue(':value', $value);
@@ -139,9 +153,15 @@ class StudentGateway extends TableDataGateway
         //return $insert;
     }
 
-    public function searchStudents($search, $limit = 2147483647, $offset = 0, $order = 'id', $by = 'ASC')
+    public function searchStudents($search, $order = 'id', $by = 'ASC', $limit = 2147483647, $offset = 0)
     {
         $pdo = $this->getPdo();
+
+        $allowedOrder = ["name", "surname", "gender", "grupNumber", "email", "satScores", "yearOfBirth", "location"];
+        $allowedBy = ["ASC", "asc", "DESC", "desc"];
+
+        $order = (is_scalar($order) and in_array($order, $allowedOrder)) ? $order : 'satScores';   
+        $by = (is_scalar($by) and in_array($by, $allowedBy)) ? $by : 'ASC';           
 
         $query = $pdo->prepare("SELECT * FROM students WHERE CONCAT(name, surname, grupnumber, email, satscores, yearofbirth, location) LIKE :search ORDER BY {$order} {$by} LIMIT :limit OFFSET :offset");
         $query->bindValue(':search', "%{$search}%");

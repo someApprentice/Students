@@ -43,7 +43,7 @@ class IndexAction extends Controller
 		$limit = $pager->getLimit();
 		$offset = $pager->getOffset();
 
-		$records = $this->studentGateway->getAllStudents($limit, $offset, $sort, $by);
+		$records = $this->studentGateway->getStudents($sort, $by, $limit, $offset);
 
 		$recordsCount = $this->studentGateway->getStudentsCount();
 

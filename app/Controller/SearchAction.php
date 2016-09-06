@@ -34,7 +34,7 @@ class SearchAction extends Controller
 			$limit = $pager->getLimit();
 			$offset = $pager->getOffset();
 
-			$records = $this->studentGateway->searchStudents($query, $limit, $offset, $sort, $by);
+			$records = $this->studentGateway->searchStudents($query, $sort, $by, $limit, $offset);
 
 			$recordsCount = $this->studentGateway->getStudentsCount($query);
 
