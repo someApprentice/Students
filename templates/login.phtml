@@ -1,3 +1,5 @@
+<?php $this->render('templates/head.phtml'); ?>
+
 	<form method="post" name="login" action="/public/login.php?go=/public/index.php">
 		<input type="hidden" name="token" value="<?= htmlspecialchars($token, ENT_QUOTES) ?>">
 	
@@ -15,3 +17,5 @@
 
 		<input type="submit" name="input" value="input">
 	</form>
+
+<?php $this->render('templates/foot.phtml'); ?>

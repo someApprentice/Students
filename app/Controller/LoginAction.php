@@ -8,7 +8,6 @@ use App\Model\Helper\LoginHelper;
 use App\Model\Entity\Forms\LoginStudentForm;
 use App\Model\Errors\ErrorList;
 use App\Model\Entity\Student;
-use App\View\Viewer;
 
 class LoginAction extends Controller
 {
@@ -16,15 +15,13 @@ class LoginAction extends Controller
     protected $validations;
     protected $helper;
     protected $loginHelper;
-    protected $viewer;
 
-    public function __construct(StudentGateway $studentGateway, LoginStudentFormValidations $validations, Helper $helper, LoginHelper $loginHelper, Viewer $viewer)
+    public function __construct(StudentGateway $studentGateway, LoginStudentFormValidations $validations, Helper $helper, LoginHelper $loginHelper)
     {
         $this->validations = $validations;
         $this->studentGateway = $studentGateway;
         $this->helper = $helper;
         $this->loginHelper = $loginHelper;
-        $this->viewer = $viewer;
     }
 
     public function login()
@@ -59,7 +56,7 @@ class LoginAction extends Controller
             }
         }
 
-        $this->viewer->render('templates/login.phtml', compact('loginStudentForm', 'errors', 'token'));
+        $this->render('templates/login.phtml', compact('loginStudentForm', 'errors', 'token'));
     }
 
     public function logout() {

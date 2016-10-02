@@ -68,22 +68,18 @@ $container['LoginHelper'] = function ($c) {
     return new LoginHelper($c['StudentGateway']);
 };
 
-$container['Viewer'] = function ($c) {
-    return new Viewer();
-};
-
 $container['IndexAction'] = function ($c) {
-    return new IndexAction($c['StudentGateway'], $c['Helper'], $c['LoginHelper'], $c['Viewer']);
+    return new IndexAction($c['StudentGateway'], $c['Helper'], $c['LoginHelper']);
 };
 
 $container['LoginAction'] = function ($c) {
-    return new LoginAction($c['StudentGateway'], $c['LoginStudentFormValidations'], $c['Helper'], $c['LoginHelper'], $c['Viewer']);
+    return new LoginAction($c['StudentGateway'], $c['LoginStudentFormValidations'], $c['Helper'], $c['LoginHelper']);
 };
 
 $container['RegisterAction'] = function ($c) {
-    return new RegisterAction($c['StudentGateway'], $c['RegisterStudentFormValidations'], $c['LoginAction'], $c['Helper'], $c['LoginHelper'], $c['Viewer']);
+    return new RegisterAction($c['StudentGateway'], $c['RegisterStudentFormValidations'], $c['LoginAction'], $c['Helper'], $c['LoginHelper']);
 };
 
 $container['SearchAction'] = function ($c) {
-    return new SearchAction($c['StudentGateway'], $c['Viewer']);
+    return new SearchAction($c['StudentGateway']);
 };

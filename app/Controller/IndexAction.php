@@ -5,21 +5,18 @@ use App\Model\Gateway\StudentGateway;
 use App\Model\Helper\Helper;
 use App\Model\Helper\LoginHelper;
 use App\Model\Helper\Pager;
-use App\View\Viewer;
 
 class IndexAction extends Controller
 {
 	protected $studentGateway;
 	protected $helper;
 	protected $loginHelper;
-	protected $viewer;
 
-	public function __construct(StudentGateway $studentGateway, Helper $helper, LoginHelper $loginHelper, Viewer $viewer)
+	public function __construct(StudentGateway $studentGateway, Helper $helper, LoginHelper $loginHelper)
 	{
 		$this->studentGateway = $studentGateway;
 		$this->helper = $helper;
 		$this->loginHelper = $loginHelper;
-		$this->viewer = $viewer;
 	}
 
 	public function run()
@@ -30,7 +27,7 @@ class IndexAction extends Controller
 
 		$token = $this->helper->getCookie('token');
 
-		$this->viewer->render('templates/index.phtml', compact('loggedStudent', 'notify', 'token'));
+		$this->render('templates/index.phtml', compact('loggedStudent', 'notify', 'token'));
 
 
 		$correntPage = $this->getPageQuery();
@@ -51,6 +48,6 @@ class IndexAction extends Controller
 		$pager->setRecords($records);
 		$pager->setRecordsCount($recordsCount);
 
-		$this->viewer->render('templates/list.phtml', compact('pager'));
+		$this->render('templates/list.phtml', compact('pager'));
 	}
 }

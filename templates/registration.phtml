@@ -1,3 +1,5 @@
+<?php $this->render('templates/head.phtml'); ?>
+
 	<form method="post" name="registraion" action="/public/registration.php?go=/public/index.php">
 		<!--<input type="hidden" name="id">-->
 
@@ -76,3 +78,5 @@
 
 		<input type="submit" name="input" value="input">
 	</form>
+
+	<?php $this->render('templates/foot.phtml'); ?>

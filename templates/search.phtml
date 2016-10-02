@@ -1,7 +1,11 @@
-	<form method="get" name="search" action="/public/search.php">
-		<label>
-			Search <input type="text" name="query" value="<?= (isset($query)) ? htmlspecialchars($query, ENT_QUOTES) : '' ?>">
-		</label>
+<?php $this->render('templates/head.phtml'); ?>
 
-		<input id="button" type="submit" value="input">
-	</form>
+<form method="get" name="search" action="/public/search.php">
+	<label>
+		Search <input type="text" name="query" value="<?= (isset($query)) ? htmlspecialchars($query, ENT_QUOTES) : '' ?>">
+	</label>
+
+	<input id="button" type="submit" value="input">
+</form>
+
+<?php $this->render('templates/foot.phtml'); ?>

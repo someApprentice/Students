@@ -9,7 +9,6 @@ use App\Model\Entity\Student;
 use App\Model\Helper\Helper;
 use App\Controller\LoginAction;
 use App\Model\Helper\LoginHelper;
-use App\View\Viewer;
 
 class RegisterAction extends Controller
 {
@@ -18,16 +17,14 @@ class RegisterAction extends Controller
     protected $loginAction;
     protected $helper;
     protected $loginHelper;
-    protected $viewer;
 
-    public function __construct(StudentGateway $studentGateway, RegisterStudentFormValidations $validations, LoginAction $loginAction, Helper $helper, LoginHelper $loginHelper, Viewer $viewer)
+    public function __construct(StudentGateway $studentGateway, RegisterStudentFormValidations $validations, LoginAction $loginAction, Helper $helper, LoginHelper $loginHelper)
     {
         $this->validations = $validations;
         $this->studentGateway = $studentGateway;
         $this->loginAction = $loginAction;
         $this->helper = $helper;
         $this->loginHelper = $loginHelper;
-        $this->viewer = $viewer;
     }
 
     public function register()
@@ -72,6 +69,6 @@ class RegisterAction extends Controller
             }
         }
 
-        $this->viewer->render('templates/registration.phtml', compact('registerStudentForm', 'errors', 'token', 'logged'));
+        $this->render('templates/registration.phtml', compact('registerStudentForm', 'errors', 'token', 'logged'));
     }
 }
