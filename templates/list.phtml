@@ -1,55 +1,57 @@
-<?php if ($pager->getRecords()) : ?>
-	<?php if ($pager->getRecords()->count() != 0) : ?>
-		<table>
-			<tr>
-				<th><a href="?<?= $pager->getSortLinkBy('name')['link'] ?>">Name <?= $pager->getSortLinkBy('name')['linkNamePostfix'] ?></a></th>
-				<th><a href="?<?= $pager->getSortLinkBy('surname')['link'] ?>">Surname</a> <?= $pager->getSortLinkBy('surname')['linkNamePostfix'] ?></th>
-				<th><a href="?<?= $pager->getSortLinkBy('gender')['link'] ?>">Gender <?= $pager->getSortLinkBy('gender')['linkNamePostfix'] ?></a></th>
-				<th><a href="?<?= $pager->getSortLinkBy('grupNumber')['link'] ?>">Grup Number <?= $pager->getSortLinkBy('grupNumber')['linkNamePostfix'] ?></a></th>
-				<th><a href="?<?= $pager->getSortLinkBy('email')['link'] ?>">Email <?= $pager->getSortLinkBy('email')['linkNamePostfix'] ?></a></th>
-				<th><a href="?<?= $pager->getSortLinkBy('satScores')['link'] ?>">SAT Scores <?= $pager->getSortLinkBy('satScores')['linkNamePostfix'] ?></a></th>
-				<th><a href="?<?= $pager->getSortLinkBy('yearOfBirth')['link'] ?>">Year Of Birth <?= $pager->getSortLinkBy('yearOfBirth')['linkNamePostfix'] ?></a></th>
-				<th><a href="?<?= $pager->getSortLinkBy('location')['link'] ?>">Location <?= $pager->getSortLinkBy('location')['linkNamePostfix'] ?></a></th>
-			</tr>
-
-			<?php foreach ($pager->getRecords() as $student) :?>
+<?php if (isset($pager)) : ?>
+	<?php if ($pager->getRecords()) : ?>
+		<?php if ($pager->getRecords()->count() != 0) : ?>
+			<table>
 				<tr>
-					<td><?= $student->getName() ?></td>
-					<td><?= $student->getSurname() ?></td>
-					<td><?= $student->getGender() ?></td>
-					<td><?= $student->getGrupNumber() ?></td>
-					<td><?= $student->getEmail() ?> </td>
-					<td><?= $student->getSATscores() ?></td>
-					<td><?= $student->getYearOfBirth() ?></td>
-					<td><?= $student->getLocation() ?></td>
+					<th><a href="?<?= $pager->getSortLinkBy('name')['link'] ?>">Name <?= $pager->getSortLinkBy('name')['linkNamePostfix'] ?></a></th>
+					<th><a href="?<?= $pager->getSortLinkBy('surname')['link'] ?>">Surname</a> <?= $pager->getSortLinkBy('surname')['linkNamePostfix'] ?></th>
+					<th><a href="?<?= $pager->getSortLinkBy('gender')['link'] ?>">Gender <?= $pager->getSortLinkBy('gender')['linkNamePostfix'] ?></a></th>
+					<th><a href="?<?= $pager->getSortLinkBy('grupNumber')['link'] ?>">Grup Number <?= $pager->getSortLinkBy('grupNumber')['linkNamePostfix'] ?></a></th>
+					<th><a href="?<?= $pager->getSortLinkBy('email')['link'] ?>">Email <?= $pager->getSortLinkBy('email')['linkNamePostfix'] ?></a></th>
+					<th><a href="?<?= $pager->getSortLinkBy('satScores')['link'] ?>">SAT Scores <?= $pager->getSortLinkBy('satScores')['linkNamePostfix'] ?></a></th>
+					<th><a href="?<?= $pager->getSortLinkBy('yearOfBirth')['link'] ?>">Year Of Birth <?= $pager->getSortLinkBy('yearOfBirth')['linkNamePostfix'] ?></a></th>
+					<th><a href="?<?= $pager->getSortLinkBy('location')['link'] ?>">Location <?= $pager->getSortLinkBy('location')['linkNamePostfix'] ?></a></th>
 				</tr>
-			<?php endforeach; ?>
 
-		</table>
-	<?php else: ?>
-		No records.
+				<?php foreach ($pager->getRecords() as $student) :?>
+					<tr>
+						<td><?= $student->getName() ?></td>
+						<td><?= $student->getSurname() ?></td>
+						<td><?= $student->getGender() ?></td>
+						<td><?= $student->getGrupNumber() ?></td>
+						<td><?= $student->getEmail() ?> </td>
+						<td><?= $student->getSATscores() ?></td>
+						<td><?= $student->getYearOfBirth() ?></td>
+						<td><?= $student->getLocation() ?></td>
+					</tr>
+				<?php endforeach; ?>
+
+			</table>
+		<?php else: ?>
+			No records.
+		<?php endif; ?>
 	<?php endif; ?>
-<?php endif; ?>
 
-<?php if ($pager->getTotalPages() > 1) : ?>
-	<div class="pages">
-		
-		<?php if ($pager->getCorrentPage() != 1) : ?>
-			<a href="?<?= $pager->getLinkForPage(1) ?>">[&lt;&lt;]</a>
-			<a href="?<?= $pager->getLinkForPage($pager->getPreviosPage()) ?>">[&lt;]</a> 
-		<?php endif; ?>
-
-		<?php for ($page = 1; $page <= $pager->getTotalPages(); $page++) : ?>
-			<?php if ($page != $pager->getCorrentPage()) : ?>
-				<a href="?<?= $pager->getLinkForPage($page) ?>">[<?= $page ?>]</a>
-			<?php else : ?>
-				<a class="correntPage" href="?<?= $pager->getLinkForPage($page) ?>">[<?= $page ?>]</a>
+	<?php if ($pager->getTotalPages() > 1) : ?>
+		<div class="pages">
+			
+			<?php if ($pager->getCorrentPage() != 1) : ?>
+				<a href="?<?= $pager->getLinkForPage(1) ?>">[&lt;&lt;]</a>
+				<a href="?<?= $pager->getLinkForPage($pager->getPreviosPage()) ?>">[&lt;]</a> 
 			<?php endif; ?>
-		<?php endfor; ?>
 
-		<?php if ($pager->getCorrentPage() != $pager->getTotalPages()) : ?>
-			<a href="?<?= $pager->getLinkForPage($pager->getNextPage()) ?>">[&gt;]</a>
-			<a href="?<?= $pager->getLinkForPage($pager->getTotalPages()) ?>">[&gt;&gt;]</a>
-		<?php endif; ?>
-	</div>
+			<?php for ($page = 1; $page <= $pager->getTotalPages(); $page++) : ?>
+				<?php if ($page != $pager->getCorrentPage()) : ?>
+					<a href="?<?= $pager->getLinkForPage($page) ?>">[<?= $page ?>]</a>
+				<?php else : ?>
+					<a class="correntPage" href="?<?= $pager->getLinkForPage($page) ?>">[<?= $page ?>]</a>
+				<?php endif; ?>
+			<?php endfor; ?>
+
+			<?php if ($pager->getCorrentPage() != $pager->getTotalPages()) : ?>
+				<a href="?<?= $pager->getLinkForPage($pager->getNextPage()) ?>">[&gt;]</a>
+				<a href="?<?= $pager->getLinkForPage($pager->getTotalPages()) ?>">[&gt;&gt;]</a>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
 <?php endif; ?>

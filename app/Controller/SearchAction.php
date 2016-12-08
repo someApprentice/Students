@@ -19,8 +19,6 @@ class SearchAction extends Controller
 		if ($_GET) {
 			$query = $this->getQuery('query');
 
-			$this->render('templates\search.phtml', compact('query'));
-
 			$correntPage = $this->getPageQuery();
 
 			$sortQueries = $this->getSortQuery();
@@ -39,9 +37,9 @@ class SearchAction extends Controller
 			$pager->setRecords($records);
 			$pager->setRecordsCount($recordsCount);
 
-			$this->render('templates\list.phtml', compact('pager'));
+			$this->render('templates/search.phtml', compact('query', 'pager'));
 		} else {
-			$this->render('templates\search.phtml');
+			$this->render('templates/search.phtml');
 		}
 	}
 }
