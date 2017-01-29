@@ -10,4 +10,7 @@
 Hello, <?= htmlspecialchars($loggedStudent->getName(), ENT_QUOTES) ?> <?= htmlspecialchars($loggedStudent->getSurname(), ENT_QUOTES) ?>. Want to <a href="registration.php">edit</a> or <a href="logout.php?token=<?= $token ?>&go=/public/index.php">logout?</a>
 <?php endif ?>
 
+
+<?php $this->render('templates/list.phtml', compact('pager')); ?>
+
 <?php $this->render('templates/foot.phtml'); ?>

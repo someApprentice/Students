@@ -27,8 +27,6 @@ class IndexAction extends Controller
 
 		$token = $this->helper->getCookie('token');
 
-		$this->render('templates/index.phtml', compact('loggedStudent', 'notify', 'token'));
-
 
 		$correntPage = $this->getPageQuery();
 
@@ -48,6 +46,6 @@ class IndexAction extends Controller
 		$pager->setRecords($records);
 		$pager->setRecordsCount($recordsCount);
 
-		$this->render('templates/list.phtml', compact('pager'));
+		$this->render('templates/index.phtml', compact('loggedStudent', 'notify', 'token', 'pager'));
 	}
 }
