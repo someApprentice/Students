@@ -7,7 +7,9 @@ class Controller
 	{
 		if (isset($_GET[$query]) and is_scalar($_GET[$query])) {
 			return $_GET[$query];
-		}
+		} else {
+            return '';
+        }
 	}
 
 	public function getPageQuery()
@@ -19,8 +21,8 @@ class Controller
 		}
 	}
 
-	public function getSortQuery()
-	{
+    public function getSortQuery()
+    {
         $orderAllowed = [
             'id',
             'name',
@@ -32,13 +34,15 @@ class Controller
             'location'
         ];
 
-		if (isset($_GET['sort']) and is_scalar($_GET['sort']) and in_array($_GET['sort'], $orderAllowed)) {
-            $queries['sort'] = $_GET['sort'];   
-		} else {
-			$queries['sort'] = 'satScores';
-		}
+        if (isset($_GET['sort']) and is_scalar($_GET['sort']) and in_array($_GET['sort'], $orderAllowed)) {
+            return $_GET['sort'];   
+        } else {
+            return 'satScores';
+        }
+    }
 
-
+    public function getByQuery()
+    {
         $byAllowed = [
             'ASC',
             'asc',
@@ -47,10 +51,16 @@ class Controller
         ];
 
         if (isset($_GET['by']) and is_scalar($_GET['by']) and in_array($_GET['by'], $byAllowed)) {
-            $queries['by'] = $_GET['by'];
+            return $_GET['by'];
         } else {
-			$queries['by'] = 'asc';
-		}
+            return 'asc';
+        }
+    }
+
+	public function getSortQueries()
+	{
+        $queries['sort'] = $this->getSortQuery();
+        $queries['by'] = $this->getByQuery();
 
 		return $queries;
 	}
