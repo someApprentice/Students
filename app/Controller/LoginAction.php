@@ -60,10 +60,13 @@ class LoginAction extends Controller
     }
 
     public function logout() {
-        if ($this->helper->validToken($_GET['token']) and $this->loginHelper->isLoggedIn()) {
-                $this->loginHelper->deleteCookies();
-        }
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        $this->redirect($this->getQuery('go'));
+            if ($this->helper->validToken($_POST['token']) and $this->loginHelper->isLoggedIn()) {
+                    $this->loginHelper->deleteCookies();
+            }
+
+            $this->redirect($this->getQuery('go'));
+        }
     }
 }
