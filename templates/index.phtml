@@ -11,6 +11,6 @@ Hello, <?= htmlspecialchars($loggedStudent->getName(), ENT_QUOTES) ?> <?= htmlsp
 <?php endif ?>
 
 
-<?php $this->render('templates/list.phtml', compact('pager')); ?>
+<?php $this->render('templates/list.phtml', compact('pager', 'records')); ?>
 
 <?php $this->render('templates/foot.phtml'); ?>

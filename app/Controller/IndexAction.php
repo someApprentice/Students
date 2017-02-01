@@ -27,25 +27,19 @@ class IndexAction extends Controller
 
 		$token = $this->helper->getCookie('token');
 
+		$page = $this->getPageQuery();
+		$sort = $this->getSortQuery();
+		$by = $this->getByQuery();
 
-		$correntPage = $this->getPageQuery();
+		$recordsCount = $this->studentGateway->getStudentsCount();
 
-		$sortQueries = $this->getSortQuery();
-        $sort = $sortQueries['sort'];
-        $by = $sortQueries['by'];
-        
-		$pager = new Pager(compact('correntPage', 'sort', 'by'));
+		$pager = new Pager(compact('page', 'sort', 'by'), $recordsCount);
 
 		$limit = $pager->getLimit();
 		$offset = $pager->getOffset();
 
 		$records = $this->studentGateway->getStudents($sort, $by, $limit, $offset);
 
-		$recordsCount = $this->studentGateway->getStudentsCount();
-
-		$pager->setRecords($records);
-		$pager->setRecordsCount($recordsCount);
-
-		$this->render('templates/index.phtml', compact('loggedStudent', 'notify', 'token', 'pager'));
+		$this->render('templates/index.phtml', compact('loggedStudent', 'notify', 'token', 'pager', 'records'));
 	}
 }

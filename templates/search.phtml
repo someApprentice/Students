@@ -8,6 +8,10 @@
 	<input id="button" type="submit" value="input">
 </form>
 
-<?php $this->render('templates/list.phtml', compact('pager')); ?>
+<?php 
+    if ($query != '') {
+        $this->render('templates/list.phtml', compact('pager', 'records'));
+    }
+?>
 
 <?php $this->render('templates/foot.phtml'); ?>

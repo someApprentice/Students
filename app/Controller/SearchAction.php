@@ -16,30 +16,20 @@ class SearchAction extends Controller
 
 	public function search()
 	{
-		if ($_GET) {
-			$query = $this->getQuery('query');
+		$query = $this->getQuery('query');
+		$page = $this->getPageQuery();
+		$sort = $this->getSortQuery();
+		$by = $this->getByQuery();
 
-			$correntPage = $this->getPageQuery();
+		$recordsCount = $this->studentGateway->getStudentsCount($query);
 
-			$sortQueries = $this->getSortQuery();
-	        $sort = $sortQueries['sort'];
-	        $by = $sortQueries['by'];
+		$pager = new Pager(compact('query', 'page', 'sort', 'by'), $recordsCount);
 
-			$pager = new Pager(compact('query', 'correntPage', 'sort', 'by'));
+		$limit = $pager->getLimit();
+		$offset = $pager->getOffset();
 
-			$limit = $pager->getLimit();
-			$offset = $pager->getOffset();
+		$records = $this->studentGateway->searchStudents($query, $sort, $by, $limit, $offset);
 
-			$records = $this->studentGateway->searchStudents($query, $sort, $by, $limit, $offset);
-
-			$recordsCount = $this->studentGateway->getStudentsCount($query);
-
-			$pager->setRecords($records);
-			$pager->setRecordsCount($recordsCount);
-
-			$this->render('templates/search.phtml', compact('query', 'pager'));
-		} else {
-			$this->render('templates/search.phtml');
-		}
+		$this->render('templates/search.phtml', compact('query', 'pager', 'records'));
 	}
 }
