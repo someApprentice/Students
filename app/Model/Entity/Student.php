@@ -98,8 +98,7 @@ class Student
 
     public function setPassword($password)
     {
-        $this->salt = Authorizer::generateSalt();
-        $this->hash = Authorizer::hashPassword($password, $this->salt);
+        Authorizer::setPassword($this, $password);
     }
 
     public function setHash($hash)

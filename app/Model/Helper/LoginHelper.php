@@ -54,18 +54,18 @@ class LoginHelper
 
     public static function setPassword(Student $student, $password)
     {
-        $student->setSalt(LoginHelper::generateSalt());
-        $student->setHash(LoginHelper::hashPassword($password, $student->getSalt()));
+        $student->setSalt($this->generateSalt());
+        $student->setHash($this->hashPassword($password, $student->getSalt()));
     }
 
-    public static function generateSalt()
+    protected function generateSalt()
     {
         $salt = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.*-^%$#@!?%&%_=+<>[]{}0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.*-^%$#@!?%&%_=+<>[]{}'), 0, 44);
 
         return $salt;
     }
 
-    public static function hashPassword($password, $salt)
+    protected function hashPassword($password, $salt)
     {
         $hash = md5($password . $salt);
 
