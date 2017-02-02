@@ -7,7 +7,7 @@ use App\Model\Validators\StudentValidations;
 use App\Model\Entity\Forms\RegisterStudentForm;
 use App\Model\Errors\ErrorList;
 
-class RegisterStudentFormValidations extends Validations
+class RegisterStudentFormValidations extends StudentValidations
 {
 	protected $validations = [
         'password' => [
@@ -23,16 +23,15 @@ class RegisterStudentFormValidations extends Validations
 
     protected $studentGateway;
 
-    public function __construct(StudentGateway $studentGateway, StudentValidations $studentValidations)
+    public function __construct(StudentGateway $studentGateway)
     {
         $this->studentGateway = $studentGateway;
-        $this->studentValidations = $studentValidations;
     }
 
 	public function validRegisterStudentForm(RegisterStudentForm $registerStudentForm, $editMode = false)
 	{
 
-		$errors = $this->studentValidations->validStudent($registerStudentForm->getStudent());
+		$errors = $this->validStudent($registerStudentForm->getStudent());
 
 		foreach ($this->validations as $field => $validator) {
 			$parameters = array();
