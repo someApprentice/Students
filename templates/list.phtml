@@ -32,20 +32,20 @@
 	<?php if ($pager->getTotalPages() > 1) : ?>
 		<div class="pages">
 			
-			<?php if ($pager->getCorrentPage() != 1) : ?>
+			<?php if ($pager->getCurrentPage() != 1) : ?>
 				<a href="?<?= htmlspecialchars($pager->getLinkForPage(1)) ?>">[&lt;&lt;]</a>
 				<a href="?<?= htmlspecialchars($pager->getLinkForPage($pager->getPreviosPage())) ?>">[&lt;]</a> 
 			<?php endif; ?>
 
 			<?php for ($page = 1; $page <= $pager->getTotalPages(); $page++) : ?>
-				<?php if ($page != $pager->getCorrentPage()) : ?>
+				<?php if ($page != $pager->getCurrentPage()) : ?>
 					<a href="?<?= htmlspecialchars($pager->getLinkForPage($page)) ?>">[<?= $page ?>]</a>
 				<?php else : ?>
-					<a class="correntPage" href="?<?= htmlspecialchars($pager->getLinkForPage($page)) ?>">[<?= $page ?>]</a>
+					<a class="currentPage" href="?<?= htmlspecialchars($pager->getLinkForPage($page)) ?>">[<?= $page ?>]</a>
 				<?php endif; ?>
 			<?php endfor; ?>
 
-			<?php if ($pager->getCorrentPage() != $pager->getTotalPages()) : ?>
+			<?php if ($pager->getCurrentPage() != $pager->getTotalPages()) : ?>
 				<a href="?<?= htmlspecialchars($pager->getLinkForPage($pager->getNextPage())) ?>">[&gt;]</a>
 				<a href="?<?= htmlspecialchars($pager->getLinkForPage($pager->getTotalPages())) ?>">[&gt;&gt;]</a>
 			<?php endif; ?>
