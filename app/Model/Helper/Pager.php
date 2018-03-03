@@ -29,7 +29,7 @@ class Pager
 		return $previosPage;
 	}
 
-	public function getCorrentPage()
+	public function getCurrentPage()
 	{
 		return $this->queries['page'];
 	}
